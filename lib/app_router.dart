@@ -66,6 +66,34 @@ class AppRouter {
               : LandingScreen(),
         );
 
+      case RouteName.homeScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.homeScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: HomeScreen(),
+                )
+              : HomeScreen(),
+        );
+
+      case RouteName.profileScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.profileScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: ProfileScreen(),
+                )
+              : ProfileScreen(),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

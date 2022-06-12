@@ -31,6 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
           width: double.maxFinite,
           color: Palette.white,
           padding: const EdgeInsets.all(26.0),
+          alignment: Alignment.center,
           child: ListView(
             children: [
               Text(
@@ -111,7 +112,10 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               PrimaryButton(
                 buttonText: Wording.login,
-                onTap: () => print("Login action pressed"),
+                onTap: () => Navigator.pushReplacementNamed(
+                  context,
+                  RouteName.landingScreen,
+                ),
               ),
               const SizedBox(
                 height: 50.0,

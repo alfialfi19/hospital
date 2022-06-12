@@ -7,6 +7,7 @@ import 'package:hospital/app.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/client/local_storage/local_storage.dart';
 import 'package:hospital/core/core.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,8 @@ void main() {
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
+
+  initializeDateFormatting('id_ID', null);
 
   runZonedGuarded(
     () => runApp(
