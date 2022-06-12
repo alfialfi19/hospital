@@ -18,10 +18,10 @@ extension HexColorExtension on Color {
 /// This is class for defined global color palette
 class Palette {
   // Twitter Color
-  static const Color finnHubPrimary = Color(0xFF56B143);
-  static const Color finnHubSecondary = Color(0xFF389B4E);
-  static const Color finnHubBackground = Color(0xFFF3F3F3);
-  static const Color finnHubBackgroundDark = Color(0xFF222222);
+  static const Color hospitalPrimary = Color(0xFF67A671);
+  static const Color hospitalSecondary = Color(0xFF3F6747);
+  static const Color hospitalBackground = Color(0xFFF3F3F3);
+  static const Color hospitalBackgroundDark = Color(0xFF222222);
 
   // Black
   static const Color black = Color(0xFF000000);
@@ -35,6 +35,7 @@ class Palette {
   static const Color greyDarken1 = Color(0xFF767575);
   static const Color greyLighten1 = Color(0xFF989898);
   static const Color greyLighten2 = Color(0xFFACACAC);
+  static const Color greyLighten3 = Color(0xFFE5E5E5);
 
   // Green
   static const Color green = Color(0xFF00FF00);
