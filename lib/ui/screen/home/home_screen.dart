@@ -152,14 +152,17 @@ class HomeScreen extends StatelessWidget {
           MenuItem(
             textMenu: Wording.doctorSchedule,
             iconMenu: Icons.people_alt_rounded,
-            actionMenu: () => print("Jadwal Dokter pressed"),
+            actionMenu: () => Navigator.pushNamed(
+              context,
+              RouteName.doctorScheduleScreen,
+            ),
           ),
           MenuItem(
             textMenu: Wording.checkHistory,
             iconMenu: Icons.bar_chart,
             actionMenu: () => Navigator.pushNamed(
               context,
-              RouteName.checkHistoryScreen,
+              RouteName.checkHistoryListScreen,
             ),
           ),
           MenuItem(

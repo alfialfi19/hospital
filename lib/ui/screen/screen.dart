@@ -1,4 +1,4 @@
-export 'check_history/check_history_screen.dart';
+export 'check_history/check_history.dart';
 export 'home/home_screen.dart';
 export 'landing/landing_screen.dart';
 export 'profile/profile_screen.dart';

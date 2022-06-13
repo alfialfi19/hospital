@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/ui/screen/doctor_list/doctor_list_screen.dart';
+import 'package:hospital/ui/screen/doctor_schedule/doctor_schedule_screen.dart';
 import 'package:hospital/ui/ui.dart';
 
 class AppRouter {
@@ -80,18 +82,60 @@ class AppRouter {
               : HomeScreen(),
         );
 
-      case RouteName.checkHistoryScreen:
+      case RouteName.checkHistoryListScreen:
         return MaterialPageRoute(
           settings: RouteSettings(
-            name: RouteName.checkHistoryScreen,
+            name: RouteName.checkHistoryListScreen,
             arguments: args?.data,
           ),
           builder: (_) => args?.bloc != null
               ? BlocProvider.value(
                   value: args!.bloc!,
-                  child: CheckHistoryScreen(),
+                  child: CheckHistoryListScreen(),
                 )
-              : CheckHistoryScreen(),
+              : CheckHistoryListScreen(),
+        );
+
+      case RouteName.checkHistoryDetailScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.checkHistoryDetailScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: CheckHistoryDetailScreen(),
+                )
+              : CheckHistoryDetailScreen(),
+        );
+
+      case RouteName.doctorScheduleScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.doctorScheduleScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: DoctorScheduleScreen(),
+                )
+              : DoctorScheduleScreen(),
+        );
+
+      case RouteName.doctorListScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.doctorListScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: DoctorListScreen(),
+                )
+              : DoctorListScreen(),
         );
 
       case RouteName.profileScreen:

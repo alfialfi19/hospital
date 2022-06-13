@@ -3,8 +3,8 @@ import 'package:hospital/common/common.dart';
 import 'package:hospital/ui/ui.dart';
 import 'package:intl/intl.dart';
 
-class CheckHistoryScreen extends StatelessWidget {
-  const CheckHistoryScreen({Key? key}) : super(key: key);
+class CheckHistoryListScreen extends StatelessWidget {
+  const CheckHistoryListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,10 @@ class CheckHistoryScreen extends StatelessWidget {
               DateTime.now(),
             ),
             doctorName: 'Dr. Wiwiek Sagita',
-            action: () => print("Lihat detail history check pressed 1"),
+            action: () => Navigator.pushNamed(
+              context,
+              RouteName.checkHistoryDetailScreen,
+            ),
           ),
           CheckHistoryItem(
             polyValue: 'Poli Gigi',
