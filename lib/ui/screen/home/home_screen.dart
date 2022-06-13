@@ -157,7 +157,10 @@ class HomeScreen extends StatelessWidget {
           MenuItem(
             textMenu: Wording.checkHistory,
             iconMenu: Icons.bar_chart,
-            actionMenu: () => print("Riwayat Periksa pressed"),
+            actionMenu: () => Navigator.pushNamed(
+              context,
+              RouteName.checkHistoryScreen,
+            ),
           ),
           MenuItem(
             textMenu: Wording.emergencyCall,

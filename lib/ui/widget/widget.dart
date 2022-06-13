@@ -1,2 +1,2 @@
-export 'button/primary_button.dart';
+export 'button/button.dart';
 export 'card/card.dart';

@@ -80,6 +80,20 @@ class AppRouter {
               : HomeScreen(),
         );
 
+      case RouteName.checkHistoryScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.checkHistoryScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: CheckHistoryScreen(),
+                )
+              : CheckHistoryScreen(),
+        );
+
       case RouteName.profileScreen:
         return MaterialPageRoute(
           settings: RouteSettings(

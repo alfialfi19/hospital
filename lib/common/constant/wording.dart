@@ -20,4 +20,5 @@ class Wording {
   static const String medicalRecordNumber = 'No. Rekam Medik';
   static const String changeProfile = 'Edit $profile';
   static const String logout = 'Logout';
+  static const String seeDetail = 'Lihat Detail';
 }
