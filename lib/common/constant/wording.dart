@@ -41,6 +41,22 @@ class Wording {
   static const String doctorScheduleDateVerify = 'Pastikan tanggal'
       ' kunjungan yang anda pilih \nsudah benar';
   static const String doctorList = 'Daftar $doctor';
+  static const String note = 'Catatan';
+  static const String doctorListNotes = ': Daftar poli yang tampil adalah'
+      ' poli yang sudah memiliki jam pelayanan';
+  static const String searchDoctorOrPoly = 'Cari $doctor, $poly';
+  static const String selectPoly = 'Pilih $poly';
+  static const String polyScheduleGreeting = 'Pastikan tanggal kunjungan'
+      ' yang anda pilih sudah benar';
+  static const String polyList = 'Lihat $register $poly';
+  static const String doctorSelection = 'Pilih $doctor';
+  static const String quotaAllow = 'Kuota tersedia: ';
+  static const String detailQueueList = 'Detail Daftar $queue';
+  static const String dateVisit = 'Tanggal $visit';
+  static const String time = 'Jam';
+  static const String checkAgain = 'Cek Kembali';
+  static const String checkGreeting = 'Pastikan tanggal kunjungan,'
+      ' poli dan dokter yang anda pilih sudah sesuai.';
 
   // Dummy Value
   static const String complaintDummyValue = 'Mengalami Pusing yang '

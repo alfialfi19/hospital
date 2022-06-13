@@ -138,6 +138,62 @@ class AppRouter {
               : DoctorListScreen(),
         );
 
+      case RouteName.polyScheduleScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.polyScheduleScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: PolyScheduleScreen(),
+                )
+              : PolyScheduleScreen(),
+        );
+
+      case RouteName.polyListScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.polyListScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: PolyListScreen(),
+                )
+              : PolyListScreen(),
+        );
+
+      case RouteName.doctorSelectionScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.doctorSelectionScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: DoctorSelectionScreen(),
+                )
+              : DoctorSelectionScreen(),
+        );
+
+      case RouteName.detailRegistrationScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.detailRegistrationScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: DetailRegistrationScreen(),
+                )
+              : DetailRegistrationScreen(),
+        );
+
       case RouteName.profileScreen:
         return MaterialPageRoute(
           settings: RouteSettings(

@@ -21,6 +21,9 @@ class SquareButton extends StatelessWidget {
     return InkWell(
       onTap: () => onTap != null ? onTap!.call() : null,
       child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: 5.0,
+        ),
         padding: const EdgeInsets.symmetric(
           vertical: 7.0,
           horizontal: 5.0,

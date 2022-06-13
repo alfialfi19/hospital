@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/common/common.dart';
 
-import '../../ui.dart';
+import '../../../ui.dart';
 
-class DoctorListScreen extends StatelessWidget {
-  const DoctorListScreen({Key? key}) : super(key: key);
+class DoctorSelectionScreen extends StatelessWidget {
+  const DoctorSelectionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Wording.doctorList),
+        title: const Text(Wording.doctorSelection),
         backgroundColor: Palette.hospitalPrimary,
       ),
       body: ListView(
@@ -27,24 +27,14 @@ class DoctorListScreen extends StatelessWidget {
             height: 20.0,
           ),
           DoctorListItem(
-            action: () => print("Doctor 1 pressed"),
+            action: () => Navigator.pushNamed(
+              context,
+              RouteName.detailRegistrationScreen,
+            ),
             doctorName: "Dr. Andre Taulany",
             doctorPoly: "Poli Gigi",
             scheduleDesc: "Jam 08:00 s/d 12:00",
-            profilePic: Images.manProfile,
-          ),
-          DoctorListItem(
-            action: () => print("Doctor 2 pressed"),
-            doctorName: "Dr. Siti Badriyah",
-            doctorPoly: "Poli Umum",
-            scheduleDesc: "Jam 09:00 s/d 12:00",
-            profilePic: Images.womanProfile,
-          ),
-          DoctorListItem(
-            action: () => print("Doctor 3 pressed"),
-            doctorName: "Dr. Ali Syafaat",
-            doctorPoly: "Poli Kandungan",
-            scheduleDesc: "Jam 08:00 s/d 12:00",
+            quotaAllow: "10",
             profilePic: Images.manProfile,
           ),
           DoctorListItem(
@@ -52,6 +42,7 @@ class DoctorListScreen extends StatelessWidget {
             doctorName: "Dr. Chika Cikuwa",
             doctorPoly: "Poli Penyakit Dalam",
             scheduleDesc: "Jam 10:00 s/d 15:00",
+            quotaAllow: "4",
             profilePic: Images.womanProfile,
           ),
           DoctorListItem(
@@ -59,6 +50,7 @@ class DoctorListScreen extends StatelessWidget {
             doctorName: "Dr. Najwa",
             doctorPoly: "Poli Gigi",
             scheduleDesc: "Jam 12:00 s/d 15:00",
+            quotaAllow: "1",
             profilePic: Images.womanProfile,
           ),
           DoctorListItem(
@@ -66,6 +58,7 @@ class DoctorListScreen extends StatelessWidget {
             doctorName: "Dr. Siti Badriyah",
             doctorPoly: "Poli Umum",
             scheduleDesc: "Jam 010:00 s/d 12:00",
+            quotaAllow: "5",
             profilePic: Images.womanProfile,
           ),
         ],
@@ -78,7 +71,7 @@ class DoctorListScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "04 Januari 2022",
+          "${Wording.dateVisit} -> 04 Januari 2022",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

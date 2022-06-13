@@ -8,6 +8,10 @@ class RouteName {
   static const String checkHistoryDetailScreen = 'checkHistoryDetailScreen';
   static const String doctorScheduleScreen = 'doctorScheduleScreen';
   static const String doctorListScreen = 'doctorListScreen';
+  static const String polyScheduleScreen = 'polyScheduleScreen';
+  static const String polyListScreen = 'polyListScreen';
+  static const String doctorSelectionScreen = 'doctorSelectionScreen';
+  static const String detailRegistrationScreen = 'detailRegistrationScreen';
 
   /// Tab
   static const String homeScreen = 'homeScreen';

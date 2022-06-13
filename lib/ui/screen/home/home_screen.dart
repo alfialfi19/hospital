@@ -147,7 +147,10 @@ class HomeScreen extends StatelessWidget {
           MenuItem(
             textMenu: Wording.queueList,
             iconMenu: Icons.list_alt_rounded,
-            actionMenu: () => print("Daftar Antrian pressed"),
+            actionMenu: () => Navigator.pushNamed(
+              context,
+              RouteName.polyScheduleScreen,
+            ),
           ),
           MenuItem(
             textMenu: Wording.doctorSchedule,
