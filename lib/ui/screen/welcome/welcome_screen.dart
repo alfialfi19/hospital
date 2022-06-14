@@ -49,7 +49,10 @@ class WelcomeScreen extends StatelessWidget {
                   color: Palette.hospitalPrimary,
                 ),
                 buttonColor: Palette.white,
-                onTap: () => print("Register Pressed"),
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  RouteName.signUpScreen,
+                ),
               ),
             ],
           ),

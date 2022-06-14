@@ -3,6 +3,7 @@ class RouteName {
   static const String welcomeScreen = 'welcomeScreen';
   static const String signInScreen = 'signInScreen';
   static const String signUpScreen = 'signUpScreen';
+  static const String bioScreen = 'bioScreen';
   static const String landingScreen = 'landingScreen';
   static const String checkHistoryListScreen = 'checkHistoryListScreen';
   static const String checkHistoryDetailScreen = 'checkHistoryDetailScreen';
@@ -12,6 +13,8 @@ class RouteName {
   static const String polyListScreen = 'polyListScreen';
   static const String doctorSelectionScreen = 'doctorSelectionScreen';
   static const String detailRegistrationScreen = 'detailRegistrationScreen';
+  static const String myQueueScreen = 'myQueueScreen';
+  static const String editProfileScreen = 'editProfileScreen';
 
   /// Tab
   static const String homeScreen = 'homeScreen';

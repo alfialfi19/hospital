@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/common/common.dart';
-import 'package:hospital/ui/ui.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+import '../../ui.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController edtHospital = TextEditingController();
   TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
+  TextEditingController edtPasswordConfirm = TextEditingController();
 
   @override
   void dispose() {
+    edtHospital.dispose();
     edtEmail.dispose();
     edtPassword.dispose();
+    edtPasswordConfirm.dispose();
     super.dispose();
   }
 
@@ -31,24 +36,53 @@ class _SignInScreenState extends State<SignInScreen> {
           width: double.maxFinite,
           color: Palette.white,
           padding: const EdgeInsets.all(26.0),
-          alignment: Alignment.center,
           child: ListView(
             children: [
               Text(
-                Wording.welcomeWord,
-                style: FontHelper.h6Bold(),
+                Wording.register,
+                style: FontHelper.h5Bold(),
               ),
               const SizedBox(
                 height: 10.0,
               ),
               Text(
-                Wording.loginToContinue,
+                Wording.registerGreeting,
                 style: FontHelper.h7Regular(
                   color: Palette.greyLighten2,
                 ),
               ),
               const SizedBox(
                 height: 40.0,
+              ),
+              SizedBox(
+                height: 40.0,
+                child: TextField(
+                  controller: edtHospital,
+                  decoration: InputDecoration(
+                    labelText: Wording.hospital,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Palette.greyLighten2,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        4.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Palette.hospitalPrimary,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        4.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
               ),
               SizedBox(
                 height: 40.0,
@@ -109,21 +143,45 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(
-                height: 40.0,
+                height: 20.0,
               ),
-              PrimaryButton(
-                buttonText: Wording.login,
-                onTap: () => Navigator.pushReplacementNamed(
-                  context,
-                  RouteName.landingScreen,
+              SizedBox(
+                height: 40.0,
+                child: TextField(
+                  controller: edtPasswordConfirm,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: Wording.passwordConfirm,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Palette.greyLighten2,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        4.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Palette.hospitalPrimary,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        4.0,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(
-                height: 50.0,
+                height: 40.0,
               ),
-              Image.asset(
-                Images.signInBottomImage,
-                fit: BoxFit.none,
+              PrimaryButton(
+                buttonText: Wording.next,
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  RouteName.bioScreen,
+                ),
               ),
             ],
           ),

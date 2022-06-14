@@ -3,14 +3,14 @@ import 'package:hospital/common/common.dart';
 
 import '../../../ui.dart';
 
-class DetailRegistrationScreen extends StatelessWidget {
-  const DetailRegistrationScreen({Key? key}) : super(key: key);
+class MyQueueScreen extends StatelessWidget {
+  const MyQueueScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Wording.detailQueueList),
+        title: const Text(Wording.myQueue),
         backgroundColor: Palette.hospitalPrimary,
       ),
       body: SafeArea(
@@ -33,8 +33,53 @@ class DetailRegistrationScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50.0,
                 ),
-                _buildDataRecheckSection(context),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 20.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Palette.hospitalPrimary,
+                    borderRadius: BorderRadius.circular(
+                      8.0,
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          Wording.yourQueue,
+                          style: FontHelper.h7Bold(
+                            color: Palette.white,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "10",
+                          style: FontHelper.h3Bold(
+                            color: Palette.white,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
+            ),
+            Positioned(
+              bottom: 70.0,
+              left: 0.0,
+              right: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                ),
+                child: _buildGreetingsSection(context),
+              ),
             ),
             Positioned(
               bottom: 0.0,
@@ -45,14 +90,17 @@ class DetailRegistrationScreen extends StatelessWidget {
                   horizontal: 24.0,
                 ),
                 child: SquareButton(
-                  buttonText: Wording.register,
+                  buttonText: Wording.backToHome,
                   textStyle: FontHelper.h7Regular(
                     color: Palette.white,
                   ),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.myQueueScreen,
-                  ),
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RouteName.landingScreen,
+                      (route) => false,
+                    );
+                  },
                 ),
               ),
             ),
@@ -169,19 +217,19 @@ class DetailRegistrationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDataRecheckSection(BuildContext context) {
+  Widget _buildGreetingsSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          Wording.checkAgain,
+          Wording.thanks,
           style: FontHelper.h8Bold(),
         ),
         const SizedBox(
           height: 5.0,
         ),
         Text(
-          Wording.checkGreeting,
+          Wording.thanksGreeting,
           style: FontHelper.h7Regular(),
         ),
       ],

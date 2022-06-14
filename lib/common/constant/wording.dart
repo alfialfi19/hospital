@@ -5,7 +5,21 @@ class Wording {
   static const String loginToContinue = 'Silahkan login untuk melanjutkan';
   static const String email = 'Email';
   static const String password = 'Password';
+  static const String passwordConfirm = 'Konfirmasi $password';
   static const String hello = 'Hello';
+  static const String hospital = 'Rumah Sakit';
+  static const String registerGreeting = 'Silahkan daftar '
+      'jika belum memiliki akun';
+  static const String bio = 'Biodata Diri';
+  static const String bioGreeting = 'Silahkan isi dengan '
+      'biodata diri anda';
+  static const String next = 'Selanjutnya';
+  static const String idNo = 'NIK';
+  static const String fullName = 'Nama Lengkap';
+  static const String gender = 'Jenis Kelamin';
+  static const String birthdate = 'Tanggal Lahir';
+  static const String telephone = 'No. Telp';
+  static const String address = 'Alamat';
   static const String appTitle = 'Antrian Ku';
   static const String queue = 'Antrian';
   static const String queueList = 'Daftar $queue';
@@ -57,6 +71,12 @@ class Wording {
   static const String checkAgain = 'Cek Kembali';
   static const String checkGreeting = 'Pastikan tanggal kunjungan,'
       ' poli dan dokter yang anda pilih sudah sesuai.';
+  static const String myQueue = '$queue Anda';
+  static const String thanksGreeting = 'Pendaftaran online berhasil.'
+      ' Semoga lekas sembuh dan sehat selalu.';
+  static const String backToHome = 'Kembali ke Home';
+  static const String yourQueue = 'Nomor\n$queue Anda';
+  static const String save = 'Simpan';
 
   // Dummy Value
   static const String complaintDummyValue = 'Mengalami Pusing yang '

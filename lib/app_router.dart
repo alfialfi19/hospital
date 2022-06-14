@@ -54,6 +54,34 @@ class AppRouter {
               : const SignInScreen(),
         );
 
+      case RouteName.signUpScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.signUpScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: const SignUpScreen(),
+                )
+              : const SignUpScreen(),
+        );
+
+      case RouteName.bioScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.bioScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: const BioScreen(),
+                )
+              : const BioScreen(),
+        );
+
       case RouteName.landingScreen:
         return MaterialPageRoute(
           settings: RouteSettings(
@@ -194,6 +222,20 @@ class AppRouter {
               : DetailRegistrationScreen(),
         );
 
+      case RouteName.myQueueScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.myQueueScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: MyQueueScreen(),
+                )
+              : MyQueueScreen(),
+        );
+
       case RouteName.profileScreen:
         return MaterialPageRoute(
           settings: RouteSettings(
@@ -206,6 +248,20 @@ class AppRouter {
                   child: ProfileScreen(),
                 )
               : ProfileScreen(),
+        );
+
+      case RouteName.editProfileScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.editProfileScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: EditProfileScreen(),
+                )
+              : EditProfileScreen(),
         );
 
       default:

@@ -98,7 +98,10 @@ class ProfileScreen extends StatelessWidget {
         ProfileAction(
           iconAction: Icons.settings,
           titleAction: Wording.changeProfile,
-          action: () => print("Change profile pressed"),
+          action: () => Navigator.pushNamed(
+            context,
+            RouteName.editProfileScreen,
+          ),
         ),
         const SizedBox(
           height: 10.0,
