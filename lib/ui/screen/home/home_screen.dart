@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int userType = 1; //it's just for dummy
+    int userType = 0; //it's just for dummy
 
     Widget content;
     Widget contentBottom;

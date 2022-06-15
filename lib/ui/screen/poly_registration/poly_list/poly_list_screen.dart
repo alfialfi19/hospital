@@ -72,7 +72,7 @@ class PolyListScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${Wording.dateVisit} -> 04 Januari 2022",
+          "${Wording.dateVisit} -> 15 Juni 2022",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

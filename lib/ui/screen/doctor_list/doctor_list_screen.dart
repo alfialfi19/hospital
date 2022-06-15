@@ -78,7 +78,7 @@ class DoctorListScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "04 Januari 2022",
+          "15 Juni Januari 2022",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

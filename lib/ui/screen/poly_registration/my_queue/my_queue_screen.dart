@@ -126,7 +126,7 @@ class MyQueueScreen extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "Senin, 13 Juni 2022",
+              "Rabu, 15 Juni 2022",
               style: FontHelper.h7Bold(),
             ),
           ],
