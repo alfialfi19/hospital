@@ -6,4 +6,5 @@ export 'profile/profile.dart';
 export 'sign_in/sign_in_screen.dart';
 export 'sign_up/sign_up.dart';
 export 'splash/splash_screen.dart';
+export 'update_check/update_check.dart';
 export 'welcome/welcome_screen.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/ui/screen/doctor_list/doctor_list_screen.dart';
 import 'package:hospital/ui/screen/doctor_schedule/doctor_schedule_screen.dart';
+import 'package:hospital/ui/screen/queue_confirm/queue_confirm.dart';
 import 'package:hospital/ui/ui.dart';
 
 class AppRouter {
@@ -262,6 +263,62 @@ class AppRouter {
                   child: EditProfileScreen(),
                 )
               : EditProfileScreen(),
+        );
+
+      case RouteName.queueDoctorList:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.queueDoctorList,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: QueueDoctorList(),
+                )
+              : QueueDoctorList(),
+        );
+
+      case RouteName.queueList:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.queueList,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: QueueList(),
+                )
+              : QueueList(),
+        );
+
+      case RouteName.updateCheckPatientList:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.updateCheckPatientList,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: UpdateCheckPatientList(),
+                )
+              : UpdateCheckPatientList(),
+        );
+
+      case RouteName.updateCheckPatientForm:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.updateCheckPatientForm,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: UpdateCheckPatientForm(),
+                )
+              : UpdateCheckPatientForm(),
         );
 
       default:

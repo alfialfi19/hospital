@@ -113,7 +113,11 @@ class ProfileScreen extends StatelessWidget {
         ProfileAction(
           iconAction: Icons.arrow_right_alt_rounded,
           titleAction: Wording.logout,
-          action: () => print("Logout pressed"),
+          action: () => Navigator.pushNamedAndRemoveUntil(
+            context,
+            RouteName.welcomeScreen,
+            (route) => false,
+          ),
         ),
       ],
     );

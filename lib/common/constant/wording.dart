@@ -58,6 +58,8 @@ class Wording {
   static const String note = 'Catatan';
   static const String doctorListNotes = ': Daftar poli yang tampil adalah'
       ' poli yang sudah memiliki jam pelayanan';
+  static const String updateQueueNote = ': Daftar pasien yang '
+      'tampil adalah pasien pada hari ini';
   static const String searchDoctorOrPoly = 'Cari $doctor, $poly';
   static const String selectPoly = 'Pilih $poly';
   static const String polyScheduleGreeting = 'Pastikan tanggal kunjungan'
@@ -77,6 +79,10 @@ class Wording {
   static const String backToHome = 'Kembali ke Home';
   static const String yourQueue = 'Nomor\n$queue Anda';
   static const String save = 'Simpan';
+
+  // PIC
+  static const String queueConfirm = 'Konfirmasi Antrian';
+  static const String updateCheckResult = 'Update Pemeriksaan';
 
   // Dummy Value
   static const String complaintDummyValue = 'Mengalami Pusing yang '

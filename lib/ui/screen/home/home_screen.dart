@@ -13,6 +13,72 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int userType = 0; //it's just for dummy
+
+    Widget content;
+    Widget contentBottom;
+
+    if (userType == 0) {
+      content = Column(
+        children: [
+          PicMenuItem(
+            icon: Icons.list_alt_outlined,
+            title: Wording.queueConfirm,
+            action: () => Navigator.pushNamed(
+              context,
+              RouteName.queueDoctorList,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          PicMenuItem(
+            icon: Icons.people_alt_rounded,
+            title: Wording.updateCheckResult,
+            action: () => Navigator.pushNamed(
+              context,
+              RouteName.updateCheckPatientList,
+            ),
+          ),
+        ],
+      );
+    } else {
+      content = Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                Wording.appTitle,
+                style: FontHelper.h7Bold(
+                  color: Palette.hospitalSecondary,
+                ),
+              ),
+              Text(
+                DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                  DateTime.now(),
+                ),
+                style: FontHelper.h7Regular(
+                  color: Palette.hospitalSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          _buildHeader(context),
+          _buildMenu(context),
+        ],
+      );
+    }
+
+    if (userType == 0) {
+      contentBottom = Container();
+    } else {
+      contentBottom = _buildBottom(context);
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -37,37 +103,14 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 50.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    Wording.appTitle,
-                    style: FontHelper.h7Bold(
-                      color: Palette.hospitalSecondary,
-                    ),
-                  ),
-                  Text(
-                    DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
-                      DateTime.now(),
-                    ),
-                    style: FontHelper.h7Regular(
-                      color: Palette.hospitalSecondary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              _buildHeader(context),
-              _buildMenu(context),
+              content,
             ],
           ),
           Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: _buildBottom(context),
+            child: contentBottom,
           ),
         ],
       ),

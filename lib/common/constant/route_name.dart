@@ -16,6 +16,12 @@ class RouteName {
   static const String myQueueScreen = 'myQueueScreen';
   static const String editProfileScreen = 'editProfileScreen';
 
+  /// PIC
+  static const String queueDoctorList = 'queueDoctorList';
+  static const String queueList = 'queueList';
+  static const String updateCheckPatientList = 'updateCheckPatientList';
+  static const String updateCheckPatientForm = 'updateCheckPatientForm';
+
   /// Tab
   static const String homeScreen = 'homeScreen';
   static const String profileScreen = 'profileScreen';
