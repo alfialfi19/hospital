@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/ui/screen/about_us/about_us_screen.dart';
 import 'package:hospital/ui/screen/doctor_list/doctor_list_screen.dart';
 import 'package:hospital/ui/screen/doctor_schedule/doctor_schedule_screen.dart';
 import 'package:hospital/ui/screen/queue_confirm/queue_confirm.dart';
@@ -123,6 +124,20 @@ class AppRouter {
                   child: CheckHistoryListScreen(),
                 )
               : CheckHistoryListScreen(),
+        );
+
+      case RouteName.aboutUsScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.aboutUsScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: AboutUsScreen(),
+                )
+              : AboutUsScreen(),
         );
 
       case RouteName.checkHistoryDetailScreen:

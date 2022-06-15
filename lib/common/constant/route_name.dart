@@ -15,6 +15,7 @@ class RouteName {
   static const String detailRegistrationScreen = 'detailRegistrationScreen';
   static const String myQueueScreen = 'myQueueScreen';
   static const String editProfileScreen = 'editProfileScreen';
+  static const String aboutUsScreen = 'aboutUsScreen';
 
   /// PIC
   static const String queueDoctorList = 'queueDoctorList';

@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int userType = 0; //it's just for dummy
+    int userType = 1; //it's just for dummy
 
     Widget content;
     Widget contentBottom;
@@ -214,7 +214,10 @@ class HomeScreen extends StatelessWidget {
           MenuItem(
             textMenu: Wording.emergencyCall,
             iconMenu: Icons.emergency_rounded,
-            actionMenu: () => print("Emergency Call pressed"),
+            actionMenu: () => Navigator.pushNamed(
+              context,
+              RouteName.aboutUsScreen,
+            ),
           ),
         ],
       ),

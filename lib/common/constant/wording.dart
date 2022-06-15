@@ -15,6 +15,8 @@ class Wording {
       'biodata diri anda';
   static const String next = 'Selanjutnya';
   static const String idNo = 'NIK';
+  static const String name = 'Nama';
+  static const String classes = 'Kelas';
   static const String fullName = 'Nama Lengkap';
   static const String gender = 'Jenis Kelamin';
   static const String birthdate = 'Tanggal Lahir';
@@ -65,6 +67,7 @@ class Wording {
   static const String polyScheduleGreeting = 'Pastikan tanggal kunjungan'
       ' yang anda pilih sudah benar';
   static const String polyList = 'Lihat $register $poly';
+  static const String hospitalInformation = 'Informasi $hospital';
   static const String doctorSelection = 'Pilih $doctor';
   static const String quotaAllow = 'Kuota tersedia: ';
   static const String detailQueueList = 'Detail Daftar $queue';
