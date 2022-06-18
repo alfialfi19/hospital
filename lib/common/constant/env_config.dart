@@ -1,7 +1,7 @@
 class EnvConfig {
   static const baseProdUrl = String.fromEnvironment(
-    'https://skripsi-cms.vercel.app/rumah-sakit',
-    defaultValue: 'https://skripsi-cms.vercel.app/rumah-sakit',
+    'http://skripsi.investly.id',
+    defaultValue: 'http://skripsi.investly.id',
   );
 
   // Can add another environment here

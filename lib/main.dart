@@ -21,6 +21,11 @@ void main() {
   const String _baseUrl = EnvConfig.baseProdUrl;
 
   // Repositories instantiations
+  final BaseAuthenticationRepository _authenticationRepository =
+      AuthenticationRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
 
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
@@ -36,7 +41,7 @@ void main() {
         apiClient: _apiClient,
         localStorageClient: _localStorageClient,
         //Repository
-        // stockRepository: _stockRepository,
+        authenticationRepository: _authenticationRepository,
       ),
     ),
     (error, stackTrace) => log(

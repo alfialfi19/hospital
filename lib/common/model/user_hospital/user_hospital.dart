@@ -1,18 +1,36 @@
 import 'package:hospital/common/common.dart';
 
 class UserHospital extends BaseModel {
-  final String? email;
-  final String? username;
-  final String? fullName;
+  final String? nik;
+  final String? name;
+  final int? medicalRecord;
+  final String? birthDate;
+  final String? gender;
+  final String? address;
+  final String? phone;
+  final UserData? userData;
+  final String? userType;
 
   UserHospital({
-    this.email,
-    this.username,
-    this.fullName,
+    this.nik,
+    this.name,
+    this.medicalRecord,
+    this.birthDate,
+    this.gender,
+    this.address,
+    this.phone,
+    this.userData,
+    this.userType,
   }) : super({
-          "email": email,
-          "username": username,
-          "fullName": fullName,
+          "nik": nik,
+          "name": name,
+          "medicalRecord": medicalRecord,
+          "birthDate": birthDate,
+          "gender": gender,
+          "address": address,
+          "phone": phone,
+          "user": userData,
+          "user_type": userType,
         });
 
   factory UserHospital.fromJson(Map<String, dynamic>? json) {
@@ -21,22 +39,40 @@ class UserHospital extends BaseModel {
     }
 
     return UserHospital(
-      email: json['email'],
-      username: json['username'],
-      fullName: json['fullName'],
+      nik: json['nik'],
+      name: json['name'],
+      medicalRecord: json['medical_record'],
+      birthDate: json['birth_date'],
+      gender: json['gender'],
+      address: json['address'],
+      phone: json['phone'],
+      userData: json['user'],
+      userType: json['user_type'],
     );
   }
 
   @override
   copyWith({
-    String? email,
-    String? username,
-    String? fullName,
+    String? nik,
+    String? name,
+    int? medicalRecord,
+    String? birthDate,
+    String? gender,
+    String? address,
+    String? phone,
+    UserData? userData,
+    String? userType,
   }) {
     return UserHospital(
-      email: email ?? this.email,
-      username: username ?? this.username,
-      fullName: fullName ?? this.fullName,
+      nik: nik ?? this.nik,
+      name: name ?? this.name,
+      medicalRecord: medicalRecord ?? this.medicalRecord,
+      birthDate: birthDate ?? this.birthDate,
+      gender: gender ?? this.gender,
+      address: address ?? this.address,
+      phone: phone ?? this.phone,
+      userData: userData ?? this.userData,
+      userType: userType ?? this.userType,
     );
   }
 }

@@ -8,10 +8,14 @@ class App extends StatelessWidget {
   final BaseLocalStorageClient localStorageClient;
   final BaseApiClient apiClient;
 
+  // Repositories
+  final BaseAuthenticationRepository authenticationRepository;
+
   const App({
     Key? key,
     required this.localStorageClient,
     required this.apiClient,
+    required this.authenticationRepository,
   }) : super(key: key);
 
   @override
@@ -23,6 +27,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => apiClient,
+        ),
+        RepositoryProvider(
+          create: (context) => authenticationRepository,
         ),
       ],
       child: MultiBlocProvider(
@@ -42,6 +49,8 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => SignInCubit(
               localStorageClient: localStorageClient,
+              authenticationRepository:
+                  context.read<BaseAuthenticationRepository>(),
             ),
           ),
         ],
@@ -90,9 +99,15 @@ class _HospitalAppState extends State<HospitalApp> {
                         (route) => false,
                         arguments: ScreenArgument(
                           data: UserHospital(
-                            email: user?.email,
-                            username: user?.fullName,
-                            fullName: user?.fullName,
+                            nik: user?.nik,
+                            name: user?.name,
+                            medicalRecord: user?.medicalRecord,
+                            birthDate: user?.birthDate,
+                            gender: user?.gender,
+                            address: user?.address,
+                            phone: user?.phone,
+                            userData: user?.userData,
+                            userType: user?.userType,
                           ),
                         ),
                       );

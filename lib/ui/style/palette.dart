@@ -41,6 +41,9 @@ class Palette {
   static const Color green = Color(0xFF00FF00);
   static const Color greenLighten1 = Color(0xFF56E395);
 
+  // Red
+  static const Color red = Color(0xFFFF0000);
+
   // Transparent
   static const Color transparent = Color(0x000000FF);
 }

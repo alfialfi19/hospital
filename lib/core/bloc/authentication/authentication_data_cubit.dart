@@ -57,9 +57,9 @@ class AuthenticationDataCubit extends Cubit<BaseState<UserHospital>> {
     /// Parse RawData to Model
     try {
       _userData = UserHospital.fromJson(jsonDecode(_rawUserData));
-      debugPrint('[$this] - Get User Name : ${_userData.username}');
+      debugPrint('[$this] - Get Name : ${_userData.name}');
 
-      if (_userData.email == null) {
+      if (_userData.name == null) {
         emit(UnauthenticatedState());
         return;
       }

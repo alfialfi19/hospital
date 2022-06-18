@@ -113,10 +113,19 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               PrimaryButton(
                 buttonText: Wording.login,
-                onTap: () => Navigator.pushReplacementNamed(
-                  context,
-                  RouteName.landingScreen,
-                ),
+                // onTap: () => Navigator.pushReplacementNamed(
+                //   context,
+                //   RouteName.landingScreen,
+                // ),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Palette.red,
+                      content: Text('Email atau password anda salah'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 height: 50.0,
