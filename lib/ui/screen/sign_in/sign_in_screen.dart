@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/core/core.dart';
 import 'package:hospital/ui/ui.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -118,14 +120,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 //   RouteName.landingScreen,
                 // ),
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: Palette.red,
-                      content: Text('Email atau password anda salah'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
+                  context.read<SignInCubit>().signInWithEmail(
+                        email: edtEmail.text,
+                        password: edtPassword.text,
+                      );
                 },
+                // onTap: () {
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     const SnackBar(
+                //       backgroundColor: Palette.red,
+                //       content: Text('Email atau password anda salah'),
+                //       duration: Duration(seconds: 2),
+                //     ),
+                //   );
+                // },
               ),
               const SizedBox(
                 height: 50.0,

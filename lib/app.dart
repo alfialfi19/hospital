@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   final BaseApiClient apiClient;
 
   // Repositories
-  final BaseAuthenticationRepository authenticationRepository;
+  final BaseSignInRepository authenticationRepository;
 
   const App({
     Key? key,
@@ -49,8 +49,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => SignInCubit(
               localStorageClient: localStorageClient,
-              authenticationRepository:
-                  context.read<BaseAuthenticationRepository>(),
+              authenticationRepository: context.read<BaseSignInRepository>(),
             ),
           ),
         ],

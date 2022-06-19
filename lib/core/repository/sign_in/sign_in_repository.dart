@@ -1,11 +1,13 @@
-part of 'base_authentication_repository.dart';
+part of 'base_sign_in_repository.dart';
 
-class AuthenticationRepository extends BaseAuthenticationRepository {
+class SignInRepository extends BaseSignInRepository {
   final BaseApiClient apiClient;
+  final BaseLocalStorageClient localStorageClient;
   final String baseUrl;
 
-  AuthenticationRepository({
+  SignInRepository({
     required this.apiClient,
+    required this.localStorageClient,
     required this.baseUrl,
   });
 
@@ -25,12 +27,13 @@ class AuthenticationRepository extends BaseAuthenticationRepository {
     );
 
     if (fetchData.data['data'] != null) {
-      String _rawData = fetchData.data['data'];
+      final _rawData = fetchData.data['data'];
+      final result = json.encode(_rawData);
 
       _token = Token.fromJson(
         Map<String, dynamic>.from(
           jsonDecode(
-            _rawData,
+            result,
           ),
         ),
       );
@@ -40,8 +43,15 @@ class AuthenticationRepository extends BaseAuthenticationRepository {
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void> signOut({
+    required String token,
+  }) async {
+    Response _fetch = await apiClient.post(
+      baseUrl + Url.authLogout,
+    );
+
+    if (_fetch.data != null) {
+      localStorageClient.clearAll();
+    }
   }
 }

@@ -140,7 +140,7 @@ class DetailRegistrationScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Dr. Ali Faisal",
+                "Dr. Andre Taulany",
                 style: FontHelper.h7Bold(),
               ),
             ],

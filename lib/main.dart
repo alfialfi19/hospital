@@ -21,9 +21,9 @@ void main() {
   const String _baseUrl = EnvConfig.baseProdUrl;
 
   // Repositories instantiations
-  final BaseAuthenticationRepository _authenticationRepository =
-      AuthenticationRepository(
+  final BaseSignInRepository _authenticationRepository = SignInRepository(
     apiClient: _apiClient,
+    localStorageClient: _localStorageClient,
     baseUrl: _baseUrl,
   );
 

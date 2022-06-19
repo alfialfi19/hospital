@@ -4,13 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
 
-part 'authentication_repository.dart';
+part 'sign_in_repository.dart';
 
-abstract class BaseAuthenticationRepository {
+abstract class BaseSignInRepository {
   Future<Token?> signInWithEmail({
     required String email,
     required String password,
   });
 
-  Future<void> signOut();
+  Future signOut({
+    required String token,
+  });
 }

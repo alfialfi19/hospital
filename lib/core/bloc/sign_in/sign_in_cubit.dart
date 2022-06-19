@@ -4,7 +4,7 @@ import 'package:hospital/core/core.dart';
 
 class SignInCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
-  final BaseAuthenticationRepository authenticationRepository;
+  final BaseSignInRepository authenticationRepository;
 
   SignInCubit({
     required this.localStorageClient,
@@ -45,10 +45,29 @@ class SignInCubit extends Cubit<BaseState> {
     }
 
     emit(
-      LoadedState(
+      SuccessState(
         data: token,
         timestamp: DateTime.now(),
       ),
     );
+  }
+
+  Future<void> signOut({required String? token}) async {
+    emit(LoadingState());
+
+    var result;
+
+    try {
+      result = await authenticationRepository.signOut(
+        token: token!,
+      );
+    } catch (e) {
+      emit(ErrorState(error: '$this: $e'));
+    }
+
+    emit(SuccessState(
+      data: result,
+      timestamp: DateTime.now(),
+    ));
   }
 }
