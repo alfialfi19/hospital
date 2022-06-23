@@ -112,6 +112,20 @@ class AppRouter {
               : HomeScreen(),
         );
 
+      case RouteName.notificationScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            name: RouteName.notificationScreen,
+            arguments: args?.data,
+          ),
+          builder: (_) => args?.bloc != null
+              ? BlocProvider.value(
+                  value: args!.bloc!,
+                  child: NotificationScreen(),
+                )
+              : NotificationScreen(),
+        );
+
       case RouteName.checkHistoryListScreen:
         return MaterialPageRoute(
           settings: RouteSettings(

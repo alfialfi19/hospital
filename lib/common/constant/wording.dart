@@ -71,6 +71,7 @@ class Wording {
   static const String doctorSelection = 'Pilih $doctor';
   static const String quotaAllow = 'Kuota tersedia: ';
   static const String detailQueueList = 'Detail Daftar $queue';
+  static const String notification = 'Notifikasi';
   static const String dateVisit = 'Tanggal $visit';
   static const String time = 'Jam';
   static const String checkAgain = 'Cek Kembali';

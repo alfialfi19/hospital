@@ -87,19 +87,53 @@ class HomeScreen extends StatelessWidget {
               26.0,
             ),
             children: [
-              Text(
-                Wording.hello + ",",
-                style: FontHelper.h7Regular(
-                  color: Palette.greyLighten1,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Wording.hello + ",",
+                        style: FontHelper.h7Regular(
+                          color: Palette.greyLighten1,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        "Rizki Alfi Ramdhani",
+                        style: FontHelper.h6Bold(),
+                      ),
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteName.notificationScreen,
+                    ),
+                    child: const Icon(
+                      Icons.add_alert_rounded,
+                      color: Palette.hospitalPrimary,
+                      size: 26.0,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                "Rizki Alfi Ramdhani",
-                style: FontHelper.h6Bold(),
-              ),
+              // Text(
+              //   Wording.hello + ",",
+              //   style: FontHelper.h7Regular(
+              //     color: Palette.greyLighten1,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 10.0,
+              // ),
+              // Text(
+              //   "Rizki Alfi Ramdhani",
+              //   style: FontHelper.h6Bold(),
+              // ),
               const SizedBox(
                 height: 50.0,
               ),

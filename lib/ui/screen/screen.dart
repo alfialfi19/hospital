@@ -1,6 +1,7 @@
 export 'check_history/check_history.dart';
 export 'home/home_screen.dart';
 export 'landing/landing_screen.dart';
+export 'notification/notification_screen.dart';
 export 'poly_registration/poly_registration.dart';
 export 'profile/profile.dart';
 export 'sign_in/sign_in_screen.dart';

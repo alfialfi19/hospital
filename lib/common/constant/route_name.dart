@@ -3,6 +3,7 @@ class RouteName {
   static const String welcomeScreen = 'welcomeScreen';
   static const String signInScreen = 'signInScreen';
   static const String signUpScreen = 'signUpScreen';
+  static const String notificationScreen = 'notificationScreen';
   static const String bioScreen = 'bioScreen';
   static const String landingScreen = 'landingScreen';
   static const String checkHistoryListScreen = 'checkHistoryListScreen';
