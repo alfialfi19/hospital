@@ -15,6 +15,8 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     edtEmail.dispose();
@@ -24,127 +26,177 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Palette.hospitalPrimary,
+    return BlocProvider(
+      create: (context) => ProfileCubit(
+        profileRepository: context.read<BaseProfileRepository>(),
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        signInCubit: context.read<SignInCubit>(),
       ),
-      body: SafeArea(
-        child: Container(
-          width: double.maxFinite,
-          color: Palette.white,
-          padding: const EdgeInsets.all(26.0),
-          alignment: Alignment.center,
-          child: ListView(
-            children: [
-              Text(
-                Wording.welcomeWord,
-                style: FontHelper.h6Bold(),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                Wording.loginToContinue,
-                style: FontHelper.h7Regular(
-                  color: Palette.greyLighten2,
+      child: BlocConsumer<SignInCubit, BaseState>(
+        listener: (context, state) {
+          if (state is SuccessState) {
+            context.read<ProfileCubit>().getData();
+
+            Navigator.pushReplacementNamed(
+              context,
+              RouteName.landingScreen,
+              // arguments: ScreenArgument(
+              //   data: UserHospital(
+              //     nik: state.data?.nik,
+              //     name: user?.name,
+              //     medicalRecord: user?.medicalRecord,
+              //     birthDate: user?.birthDate,
+              //     gender: user?.gender,
+              //     address: user?.address,
+              //     phone: user?.phone,
+              //     userData: user?.userData,
+              //   ),
+              // ),
+            );
+          } else if (state is ErrorState) {
+            if (state.error.isNotEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Palette.red,
+                  content: Text(state.error),
+                  duration: const Duration(seconds: 2),
                 ),
-              ),
-              const SizedBox(
-                height: 40.0,
-              ),
-              SizedBox(
-                height: 40.0,
-                child: TextField(
-                  controller: edtEmail,
-                  decoration: InputDecoration(
-                    labelText: Wording.email,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Palette.red,
+                  content: Text('Email atau password anda salah'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+          }
+        },
+        builder: (context, state) {
+          if (state is LoadingState) {
+            _isLoading = true;
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Palette.hospitalPrimary,
+            ),
+            body: SafeArea(
+              child: Container(
+                width: double.maxFinite,
+                color: Palette.white,
+                padding: const EdgeInsets.all(26.0),
+                alignment: Alignment.center,
+                child: ListView(
+                  children: [
+                    Text(
+                      Wording.welcomeWord,
+                      style: FontHelper.h6Bold(),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      Wording.loginToContinue,
+                      style: FontHelper.h7Regular(
                         color: Palette.greyLighten2,
                       ),
-                      borderRadius: BorderRadius.circular(
-                        4.0,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                      child: TextField(
+                        controller: edtEmail,
+                        decoration: InputDecoration(
+                          labelText: Wording.email,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1,
+                              color: Palette.greyLighten2,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              4.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1,
+                              color: Palette.hospitalPrimary,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              4.0,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Palette.hospitalPrimary,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        4.0,
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                      child: TextField(
+                        controller: edtPassword,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: Wording.password,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1,
+                              color: Palette.greyLighten2,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              4.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1,
+                              color: Palette.hospitalPrimary,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              4.0,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    if (_isLoading) ...[
+                      const Center(
+                        child: CircularProgressIndicator(
+                          color: Palette.hospitalPrimary,
+                        ),
+                      ),
+                    ] else ...[
+                      PrimaryButton(
+                        buttonText: Wording.login,
+                        onTap: () {
+                          context.read<SignInCubit>().signInWithEmail(
+                                email: edtEmail.text,
+                                password: edtPassword.text,
+                              );
+                        },
+                      ),
+                    ],
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    Image.asset(
+                      Images.signInBottomImage,
+                      fit: BoxFit.none,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              SizedBox(
-                height: 40.0,
-                child: TextField(
-                  controller: edtPassword,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: Wording.password,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Palette.greyLighten2,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        4.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Palette.hospitalPrimary,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        4.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40.0,
-              ),
-              PrimaryButton(
-                buttonText: Wording.login,
-                // onTap: () => Navigator.pushReplacementNamed(
-                //   context,
-                //   RouteName.landingScreen,
-                // ),
-                onTap: () {
-                  context.read<SignInCubit>().signInWithEmail(
-                        email: edtEmail.text,
-                        password: edtPassword.text,
-                      );
-                },
-                // onTap: () {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     const SnackBar(
-                //       backgroundColor: Palette.red,
-                //       content: Text('Email atau password anda salah'),
-                //       duration: Duration(seconds: 2),
-                //     ),
-                //   );
-                // },
-              ),
-              const SizedBox(
-                height: 50.0,
-              ),
-              Image.asset(
-                Images.signInBottomImage,
-                fit: BoxFit.none,
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

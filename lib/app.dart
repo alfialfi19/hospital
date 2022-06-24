@@ -10,12 +10,14 @@ class App extends StatelessWidget {
 
   // Repositories
   final BaseSignInRepository authenticationRepository;
+  final BaseProfileRepository profileRepository;
 
   const App({
     Key? key,
     required this.localStorageClient,
     required this.apiClient,
     required this.authenticationRepository,
+    required this.profileRepository,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => authenticationRepository,
+        ),
+        RepositoryProvider(
+          create: (context) => profileRepository,
         ),
       ],
       child: MultiBlocProvider(
@@ -106,7 +111,6 @@ class _HospitalAppState extends State<HospitalApp> {
                             address: user?.address,
                             phone: user?.phone,
                             userData: user?.userData,
-                            userType: user?.userType,
                           ),
                         ),
                       );

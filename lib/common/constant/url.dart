@@ -3,4 +3,5 @@ class Url {
   static const String authRegister = '/auth/register';
   static const String authLogout = '/auth/logout';
   static const String profile = '/profile';
+  static const String doctorSchedule = '/doctor/schedule';
 }

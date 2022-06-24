@@ -25,19 +25,26 @@ class ProfileCubit extends Cubit<BaseState<UserHospital>> {
   }
 
   void getData() async {
+    emit(LoadingState());
     UserHospital? _newUserHospital;
+    print("====> masuk getData profileCubit");
 
     /// Hit Api to Get Updated Data
     try {
+      print("====> masuk TRY");
+      print("====> masuk _token: ${_tokenData.accessToken}");
       _newUserHospital = await profileRepository.getUserProfile(
         token: _tokenData.accessToken!,
       );
+      print("====> newUserHospital: $_newUserHospital");
+      print("====> newUserHospital: ${_newUserHospital?.name}");
+      print("====> newUserHospital: ${_newUserHospital?.userData}");
 
       if (_newUserHospital == null) {
         throw Exception();
       }
     } on UnauthorizedException {
-      signInCubit.signOut(
+      profileRepository.signOut(
         token: _tokenData.accessToken!,
       );
 
@@ -63,15 +70,22 @@ class ProfileCubit extends Cubit<BaseState<UserHospital>> {
     //   fcmToken: _userData.fcmToken,
     // );
 
-    ///Save UserData to Local Data
+    /// Save UserData to Local Data
     try {
+      print("===> enter TRY save to localData");
+      print("===> enter save toJson: ${jsonEncode(_newUserHospital.toJson())}");
       await localStorageClient.saveByKey(
         jsonEncode(
-          _newUserHospital!.toJson(),
+          _newUserHospital.toJson(),
         ),
         SharedPrefKey.userData,
         SharedPrefType.string,
       );
+      var test = await localStorageClient.getByKey(
+        SharedPrefKey.userData,
+        SharedPrefType.string,
+      );
+      print("===> test: $test");
     } catch (e) {
       emit(ErrorState(
         error: 'Terjadi Kesalahan, silahkan coba lagi!',
@@ -86,5 +100,24 @@ class ProfileCubit extends Cubit<BaseState<UserHospital>> {
         timestamp: DateTime.now(),
       ),
     );
+  }
+
+  Future<void> signOut() async {
+    emit(LoadingState());
+
+    var result;
+
+    try {
+      result = await profileRepository.signOut(
+        token: _tokenData.accessToken!,
+      );
+    } catch (e) {
+      emit(ErrorState(error: '$this: $e'));
+    }
+
+    emit(SuccessState(
+      data: result,
+      timestamp: DateTime.now(),
+    ));
   }
 }

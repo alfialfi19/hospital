@@ -3,13 +3,12 @@ import 'package:hospital/common/common.dart';
 class UserHospital extends BaseModel {
   final String? nik;
   final String? name;
-  final int? medicalRecord;
+  final String? medicalRecord;
   final String? birthDate;
   final String? gender;
   final String? address;
   final String? phone;
   final UserData? userData;
-  final String? userType;
 
   UserHospital({
     this.nik,
@@ -20,23 +19,43 @@ class UserHospital extends BaseModel {
     this.address,
     this.phone,
     this.userData,
-    this.userType,
   }) : super({
           "nik": nik,
           "name": name,
-          "medicalRecord": medicalRecord,
-          "birthDate": birthDate,
+          "medical_record": medicalRecord,
+          "birth_date": birthDate,
           "gender": gender,
           "address": address,
           "phone": phone,
           "user": userData,
-          "user_type": userType,
         });
 
   factory UserHospital.fromJson(Map<String, dynamic>? json) {
+    print("===> enter fromjson");
+    print("===> enter json: $json");
     if (json == null) {
       throw const FormatException('Null JSON provided');
     }
+    print("===> userData: ${json['user']}");
+    var _tes = UserHospital(
+      nik: json['nik'],
+      name: json['name'],
+      medicalRecord: json['medical_record'],
+      birthDate: json['birth_date'],
+      gender: json['gender'],
+      address: json['address'],
+      phone: json['phone'],
+      userData: UserData.fromJson(json['user']),
+    );
+    print("===> tes: $_tes");
+    print("===> tes nik: ${_tes.nik}");
+    print("===> tes name: ${_tes.name}");
+    print("===> tes medical: ${_tes.medicalRecord}");
+    print("===> tes birth: ${_tes.birthDate}");
+    print("===> tes gender: ${_tes.gender}");
+    print("===> tes address: ${_tes.address}");
+    print("===> tes phone: ${_tes.phone}");
+    print("===> tes userData: ${_tes.userData}");
 
     return UserHospital(
       nik: json['nik'],
@@ -46,8 +65,7 @@ class UserHospital extends BaseModel {
       gender: json['gender'],
       address: json['address'],
       phone: json['phone'],
-      userData: json['user'],
-      userType: json['user_type'],
+      userData: UserData.fromJson(json['user']),
     );
   }
 
@@ -55,13 +73,12 @@ class UserHospital extends BaseModel {
   copyWith({
     String? nik,
     String? name,
-    int? medicalRecord,
+    String? medicalRecord,
     String? birthDate,
     String? gender,
     String? address,
     String? phone,
     UserData? userData,
-    String? userType,
   }) {
     return UserHospital(
       nik: nik ?? this.nik,
@@ -72,7 +89,6 @@ class UserHospital extends BaseModel {
       address: address ?? this.address,
       phone: phone ?? this.phone,
       userData: userData ?? this.userData,
-      userType: userType ?? this.userType,
     );
   }
 }

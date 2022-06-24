@@ -3,11 +3,18 @@ import 'package:hospital/common/common.dart';
 
 import '../../ui.dart';
 
+// ignore: must_be_immutable
 class AboutUsScreen extends StatelessWidget {
-  const AboutUsScreen({Key? key}) : super(key: key);
+  AboutUsScreen({Key? key}) : super(key: key);
+
+  UserHospital? userData;
 
   @override
   Widget build(BuildContext context) {
+    if (ModalRoute.of(context)!.settings.arguments is UserHospital) {
+      userData = ModalRoute.of(context)!.settings.arguments as UserHospital;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.hospitalInformation),
@@ -30,7 +37,7 @@ class AboutUsScreen extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  'Rumah Sakit Semen Gresik',
+                  userData?.userData?.hospital?.name ?? "-",
                   style: FontHelper.h8Regular(),
                 ),
               ],
@@ -49,7 +56,7 @@ class AboutUsScreen extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  'C',
+                  userData?.userData?.hospital?.hospitalClass ?? "-",
                   style: FontHelper.h8Regular(),
                 ),
               ],
@@ -68,7 +75,7 @@ class AboutUsScreen extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  '031-3945522',
+                  userData?.userData?.hospital?.phone ?? "-",
                   style: FontHelper.h8Regular(),
                 ),
               ],
@@ -87,7 +94,7 @@ class AboutUsScreen extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  'Jl. Mawar Melati No. 66, Kabupaten Gresik',
+                  userData?.userData?.hospital?.address ?? "-",
                   style: FontHelper.h8Regular(),
                 ),
               ],

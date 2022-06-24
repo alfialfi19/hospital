@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/core/core.dart';
 import 'package:hospital/ui/ui.dart';
 import 'package:intl/intl.dart';
 
@@ -13,39 +15,67 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(
-          26.0,
+    return BlocListener<SignInCubit, BaseState>(
+      listener: (context, state) {
+        if (state is ErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Palette.red,
+              content: Text('Silahkan coba lagi'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else if (state is SuccessState) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RouteName.welcomeScreen,
+            (route) => false,
+          );
+        }
+      },
+      child: Scaffold(
+        body: ListView(
+          padding: const EdgeInsets.all(
+            26.0,
+          ),
+          children: [
+            Text(
+              Wording.profile,
+              style: FontHelper.h5Bold(),
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            _buildUserInfo(
+              context,
+              userData: userData,
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            _buildProfileItem(
+              context,
+              userData: userData,
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            _buildProfileAction(context),
+          ],
         ),
-        children: [
-          Text(
-            Wording.profile,
-            style: FontHelper.h5Bold(),
-          ),
-          const SizedBox(
-            height: 50.0,
-          ),
-          _buildUserInfo(context),
-          const SizedBox(
-            height: 50.0,
-          ),
-          _buildProfileItem(context),
-          const SizedBox(
-            height: 50.0,
-          ),
-          _buildProfileAction(context),
-        ],
       ),
     );
   }
 
-  Widget _buildUserInfo(BuildContext context) {
+  Widget _buildUserInfo(
+    BuildContext context, {
+    UserHospital? userData,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset(
-          Images.manProfile,
+          userData?.gender == "L" ? Images.manProfile : Images.womanProfile,
           width: 70.0,
           height: 70.0,
           fit: BoxFit.contain,
@@ -54,14 +84,14 @@ class ProfileScreen extends StatelessWidget {
           height: 20.0,
         ),
         Text(
-          "Rizki Alfi Ramdhani",
+          userData?.name?.capitalize() ?? "-",
           style: FontHelper.h7Bold(),
         ),
         const SizedBox(
           height: 5.0,
         ),
         Text(
-          "rizki.alfi@mekari.com",
+          userData?.userData?.email ?? "-",
           style: FontHelper.h8Regular(
             color: Palette.greyLighten1,
           ),
@@ -70,7 +100,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(BuildContext context) {
+  Widget _buildProfileItem(
+    BuildContext context, {
+    UserHospital? userData,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -84,8 +117,8 @@ class ProfileScreen extends StatelessWidget {
           valueItem: "17",
           titleItem: Wording.totalVisit,
         ),
-        const ProfileItem(
-          valueItem: "MD-2019-117953",
+        ProfileItem(
+          valueItem: "MD-${userData?.medicalRecord ?? '-'}",
           titleItem: Wording.medicalRecordNumber,
         ),
       ],
@@ -113,11 +146,7 @@ class ProfileScreen extends StatelessWidget {
         ProfileAction(
           iconAction: Icons.arrow_right_alt_rounded,
           titleAction: Wording.logout,
-          action: () => Navigator.pushNamedAndRemoveUntil(
-            context,
-            RouteName.welcomeScreen,
-            (route) => false,
-          ),
+          action: () => context.read<SignInCubit>().signOut(),
         ),
       ],
     );

@@ -13,12 +13,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int userType = 1; //it's just for dummy
+    String userType = userData?.userData?.userType ?? "-"; //it's just for dummy
 
     Widget content;
     Widget contentBottom;
 
-    if (userType == 0) {
+    if (userType != "USER") {
       content = Column(
         children: [
           PicMenuItem(
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
       );
     }
 
-    if (userType == 0) {
+    if (userType != "USER") {
       contentBottom = Container();
     } else {
       contentBottom = _buildBottom(context);
@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       Text(
-                        "Rizki Alfi Ramdhani",
+                        userData?.name?.capitalize() ?? "-",
                         style: FontHelper.h6Bold(),
                       ),
                     ],
@@ -251,6 +251,11 @@ class HomeScreen extends StatelessWidget {
             actionMenu: () => Navigator.pushNamed(
               context,
               RouteName.aboutUsScreen,
+              arguments: ScreenArgument(
+                data: UserHospital(
+                  userData: userData?.userData,
+                ),
+              ),
             ),
           ),
         ],

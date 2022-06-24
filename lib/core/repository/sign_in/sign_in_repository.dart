@@ -48,6 +48,7 @@ class SignInRepository extends BaseSignInRepository {
   }) async {
     Response _fetch = await apiClient.post(
       baseUrl + Url.authLogout,
+      token: token,
     );
 
     if (_fetch.data != null) {

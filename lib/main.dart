@@ -27,6 +27,12 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BaseProfileRepository _profileRepository = ProfileRepository(
+    apiClient: _apiClient,
+    localStorageClient: _localStorageClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -42,6 +48,7 @@ void main() {
         localStorageClient: _localStorageClient,
         //Repository
         authenticationRepository: _authenticationRepository,
+        profileRepository: _profileRepository,
       ),
     ),
     (error, stackTrace) => log(

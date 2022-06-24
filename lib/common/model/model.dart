@@ -1,5 +1,8 @@
 export 'base_model.dart';
+export 'doctor/doctor.dart';
+export 'doctor_schedule/doctor_schedule.dart';
 export 'hospital/hospital.dart';
+export 'poly/poly.dart';
 export 'screen_argument/screen_argument.dart';
 export 'token/token.dart';
 export 'user_data/user_data.dart';

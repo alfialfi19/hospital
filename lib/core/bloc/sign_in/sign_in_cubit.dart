@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
@@ -44,6 +46,14 @@ class SignInCubit extends Cubit<BaseState> {
       emit(ErrorState(error: '$this: $e'));
     }
 
+    var tokenEncoded = jsonEncode(token?.toJson());
+
+    localStorageClient.saveByKey(
+      tokenEncoded,
+      SharedPrefKey.token,
+      SharedPrefType.string,
+    );
+
     emit(
       SuccessState(
         data: token,
@@ -52,22 +62,34 @@ class SignInCubit extends Cubit<BaseState> {
     );
   }
 
-  Future<void> signOut({required String? token}) async {
+  Future<void> signOut() async {
     emit(LoadingState());
 
-    var result;
+    String _rawToken = await localStorageClient.getByKey(
+      SharedPrefKey.token,
+      SharedPrefType.string,
+    );
+
+    Token _token = Token.fromJson(
+      Map<String, dynamic>.from(
+        jsonDecode(_rawToken),
+      ),
+    );
 
     try {
-      result = await authenticationRepository.signOut(
-        token: token!,
+      await authenticationRepository.signOut(
+        token: _token.accessToken!,
       );
-    } catch (e) {
-      emit(ErrorState(error: '$this: $e'));
+    } catch (e, s) {
+      print("===> e: $e");
+      print("===> s: $s");
+      return emit(ErrorState(error: '$this: $e'));
     }
 
-    emit(SuccessState(
-      data: result,
-      timestamp: DateTime.now(),
-    ));
+    emit(
+      SuccessState(
+        timestamp: DateTime.now(),
+      ),
+    );
   }
 }

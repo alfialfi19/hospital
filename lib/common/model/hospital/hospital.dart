@@ -2,21 +2,21 @@ import 'package:hospital/common/common.dart';
 
 class Hospital extends BaseModel {
   final int? id;
-  final String? email;
-  final String? password;
+  final String? name;
+  final String? address;
   final String? hospitalClass;
   final String? phone;
 
   Hospital({
     this.id,
-    this.email,
-    this.password,
+    this.name,
+    this.address,
     this.hospitalClass,
     this.phone,
   }) : super({
           'id': id,
-          'email': email,
-          'password': password,
+          'name': name,
+          'address': address,
           'class': hospitalClass,
           'phone': phone,
         });
@@ -28,8 +28,8 @@ class Hospital extends BaseModel {
 
     return Hospital(
       id: json['id'],
-      email: json['email'],
-      password: json['password'],
+      name: json['name'],
+      address: json['address'],
       hospitalClass: json['class'],
       phone: json['phone'],
     );
@@ -38,15 +38,15 @@ class Hospital extends BaseModel {
   @override
   copyWith({
     int? id,
-    String? email,
-    String? password,
+    String? name,
+    String? address,
     String? hospitalClass,
     String? phone,
   }) {
     return Hospital(
       id: id ?? this.id,
-      email: email ?? this.email,
-      password: password ?? this.password,
+      name: name ?? this.name,
+      address: address ?? this.address,
       hospitalClass: hospitalClass ?? this.hospitalClass,
       phone: phone ?? this.phone,
     );
