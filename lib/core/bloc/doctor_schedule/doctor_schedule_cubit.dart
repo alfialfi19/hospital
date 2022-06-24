@@ -1,35 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
 
 class DoctorScheduleCubit extends Cubit<BaseState> {
-  final SignInCubit signInCubit;
   final BaseLocalStorageClient localStorageClient;
   final BaseDoctorScheduleRepository doctorScheduleRepository;
 
-  late Token _tokenData;
-
   DoctorScheduleCubit({
-    required this.signInCubit,
     required this.localStorageClient,
     required this.doctorScheduleRepository,
-  }) : super(InitializedState()) {
-    _tokenData = signInCubit.state.data!;
-  }
+  }) : super(InitializedState());
 
   void getData({
     String? day,
     String? poly,
   }) async {
+    print("====> enter get Data");
     emit(LoadingState());
     List<DoctorSchedule> _results = [];
+    Token _token;
+
+    try {
+      String _rawToken = await localStorageClient.getByKey(
+        SharedPrefKey.token,
+        SharedPrefType.string,
+      );
+
+      _token = Token.fromJson(
+        Map<String, dynamic>.from(
+          jsonDecode(_rawToken),
+        ),
+      );
+    } catch (e) {
+      return emit(
+        ErrorState(
+          error: '$this - Get Token From Local] - Error : $e',
+          timestamp: DateTime.now(),
+        ),
+      );
+    }
 
     try {
       _results = await doctorScheduleRepository.getDoctorSchedule(
-        token: _tokenData.accessToken!,
+        token: _token.accessToken!,
         day: day,
         polyId: poly,
       );
+      print("====> enter results: $_results");
+      print("====> enter results doctorName: ${_results.first.doctor?.name}");
 
       if (_results.isEmpty) {
         emit(EmptyState());

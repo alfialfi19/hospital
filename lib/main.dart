@@ -33,6 +33,12 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BaseDoctorScheduleRepository _doctorScheduleRepository =
+      DoctorScheduleRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -49,6 +55,7 @@ void main() {
         //Repository
         authenticationRepository: _authenticationRepository,
         profileRepository: _profileRepository,
+        doctorScheduleRepository: _doctorScheduleRepository,
       ),
     ),
     (error, stackTrace) => log(
