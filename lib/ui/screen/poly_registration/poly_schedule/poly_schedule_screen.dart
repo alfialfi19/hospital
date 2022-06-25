@@ -103,9 +103,7 @@ class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
                       child: child!,
                     );
                   },
-                  firstDate: DateTime(
-                    2000,
-                  ),
+                  firstDate: DateTime.now(),
                   lastDate: DateTime(
                     2101,
                   ),
@@ -136,10 +134,25 @@ class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
             textStyle: FontHelper.h7Regular(
               color: Palette.white,
             ),
-            onTap: () => Navigator.pushNamed(
-              context,
-              RouteName.polyListScreen,
-            ),
+            onTap: () {
+              if (_dateInput.text == "") {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Palette.red,
+                    content: Text('Pastikan sudah memilih tanggal'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              } else {
+                Navigator.pushNamed(
+                  context,
+                  RouteName.polyListScreen,
+                  arguments: ScreenArgument(
+                    data: _dateInput.text,
+                  ),
+                );
+              }
+            },
           ),
           const SizedBox(
             height: 20.0,

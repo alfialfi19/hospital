@@ -15,14 +15,11 @@ class ProfileRepository extends BaseProfileRepository {
   Future<UserHospital?> getUserProfile({
     required String token,
   }) async {
-    print("====> masuk repository getUserProfile");
     UserHospital? _userHospital;
     Response _fetch = await apiClient.get(
       baseUrl + Url.profile,
       token: token,
     );
-    print("====> TOKEN: $token");
-    print("====> masuk repository fetch: $_fetch");
 
     if (_fetch.data != null && _fetch.data['data'] != null) {
       final _rawData = _fetch.data['data'];
@@ -36,7 +33,6 @@ class ProfileRepository extends BaseProfileRepository {
         ),
       );
     }
-    print("====> masuk repository _userHospital: $_userHospital");
 
     return _userHospital;
   }

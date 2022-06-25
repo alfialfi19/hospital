@@ -39,6 +39,23 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BaseTransactionHistoryRepository _transactionHistoryRepository =
+      TransactionHistoryRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
+  final BaseHospitalRepository _hospitalRepository = HospitalRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
+  final BaseNotificationRepository _notificationRepository =
+      NotificationRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -56,6 +73,9 @@ void main() {
         authenticationRepository: _authenticationRepository,
         profileRepository: _profileRepository,
         doctorScheduleRepository: _doctorScheduleRepository,
+        transactionHistoryRepository: _transactionHistoryRepository,
+        hospitalRepository: _hospitalRepository,
+        notificationRepository: _notificationRepository,
       ),
     ),
     (error, stackTrace) => log(

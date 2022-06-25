@@ -11,6 +11,12 @@ class DoctorListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? selectedDate;
+
+    if (ModalRoute.of(context)!.settings.arguments is String) {
+      selectedDate = ModalRoute.of(context)!.settings.arguments as String;
+    }
+
     return BlocProvider(
       create: (context) => DoctorScheduleCubit(
         localStorageClient: context.read<BaseLocalStorageClient>(),
@@ -21,77 +27,87 @@ class DoctorListScreen extends StatelessWidget {
           title: const Text(Wording.doctorList),
           backgroundColor: Palette.hospitalPrimary,
         ),
-        body: BlocBuilder<DoctorScheduleCubit, BaseState>(
-          builder: (context, state) {
-            return ListView(
-              padding: const EdgeInsets.all(
-                26.0,
-              ),
-              children: [
-                _buildHeaderSection(context),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const SearchBar(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 1 pressed"),
-                  doctorName: "Dr. Andre Taulany",
-                  doctorPoly: "Poli Gigi",
-                  scheduleDesc: "Jam 08:00 s/d 12:00",
-                  profilePic: Images.manProfile,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 2 pressed"),
-                  doctorName: "Dr. Siti Badriyah",
-                  doctorPoly: "Poli Umum",
-                  scheduleDesc: "Jam 09:00 s/d 12:00",
-                  profilePic: Images.womanProfile,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 3 pressed"),
-                  doctorName: "Dr. Ali Syafaat",
-                  doctorPoly: "Poli Kandungan",
-                  scheduleDesc: "Jam 08:00 s/d 12:00",
-                  profilePic: Images.manProfile,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 4 pressed"),
-                  doctorName: "Dr. Chika Cikuwa",
-                  doctorPoly: "Poli Penyakit Dalam",
-                  scheduleDesc: "Jam 10:00 s/d 15:00",
-                  profilePic: Images.womanProfile,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 5 pressed"),
-                  doctorName: "Dr. Najwa",
-                  doctorPoly: "Poli Gigi",
-                  scheduleDesc: "Jam 12:00 s/d 15:00",
-                  profilePic: Images.womanProfile,
-                ),
-                DoctorListItem(
-                  action: () => print("Doctor 6 pressed"),
-                  doctorName: "Dr. Siti Badriyah",
-                  doctorPoly: "Poli Umum",
-                  scheduleDesc: "Jam 010:00 s/d 12:00",
-                  profilePic: Images.womanProfile,
-                ),
-              ],
-            );
-          },
+        body: ListView(
+          padding: const EdgeInsets.all(
+            26.0,
+          ),
+          children: [
+            _buildHeaderSection(context, selectedDate: selectedDate),
+            const SizedBox(
+              height: 20.0,
+            ),
+            const SearchBar(),
+            const SizedBox(
+              height: 20.0,
+            ),
+            BlocBuilder<DoctorScheduleCubit, BaseState>(
+              builder: (context, state) {
+                List<DoctorSchedule> data = [];
+
+                if (state is LoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.hospitalPrimary,
+                    ),
+                  );
+                }
+
+                if (state is ErrorState) {
+                  return Center(
+                    child: Text(
+                      Wording.somethingWentWrong,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is EmptyState) {
+                  return Center(
+                    child: Text(
+                      Wording.noData,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is LoadedState) {
+                  data = state.data;
+                }
+
+                return ListView.builder(
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return DoctorListItem(
+                      action: () => print("Doctor pressed"),
+                      doctorName: data[index].doctor?.name ?? "-",
+                      doctorPoly: data[index].poly?.name ?? "-",
+                      scheduleDesc:
+                          "Jam ${data[index].startHour ?? '-'} s/d ${data[index].endHour ?? '-'}",
+                      profilePic: data[index].doctor?.gender == "L"
+                          ? Images.manProfile
+                          : Images.womanProfile,
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context) {
+  Widget _buildHeaderSection(
+    BuildContext context, {
+    String? selectedDate,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "15 Juni 2022",
+          selectedDate ?? "-",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

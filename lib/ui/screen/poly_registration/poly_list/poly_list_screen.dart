@@ -8,6 +8,12 @@ class PolyListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? selectedDate;
+
+    if (ModalRoute.of(context)!.settings.arguments is String) {
+      selectedDate = ModalRoute.of(context)!.settings.arguments as String;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.selectPoly),
@@ -18,7 +24,7 @@ class PolyListScreen extends StatelessWidget {
           26.0,
         ),
         children: [
-          _buildHeaderSection(context),
+          _buildHeaderSection(context, selectedDate: selectedDate),
           const SizedBox(
             height: 40.0,
           ),
@@ -67,12 +73,15 @@ class PolyListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context) {
+  Widget _buildHeaderSection(
+    BuildContext context, {
+    String? selectedDate,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${Wording.dateVisit} -> 15 Juni 2022",
+          "${Wording.dateVisit} -> $selectedDate",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

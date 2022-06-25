@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/common/common.dart';
+import 'package:intl/intl.dart';
 
 import '../../ui.dart';
 
-class CheckHistoryDetailScreen extends StatelessWidget {
+class CheckHistoryDetailScreen extends StatelessWidget with RandomMixin {
   const CheckHistoryDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TransactionHistory? transactionData;
+
+    if (ModalRoute.of(context)!.settings.arguments is TransactionHistory) {
+      transactionData =
+          ModalRoute.of(context)!.settings.arguments as TransactionHistory;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.checkHistoryDetail),
@@ -21,11 +29,17 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 26.0,
               ),
               children: [
-                _buildDateTimeSection(context),
+                _buildDateTimeSection(
+                  context,
+                  transactionData: transactionData,
+                ),
                 const SizedBox(
                   height: 30.0,
                 ),
-                _buildDoctorAndPolySection(context),
+                _buildDoctorAndPolySection(
+                  context,
+                  transactionData: transactionData,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -33,7 +47,10 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20.0,
                 ),
-                _buildComplaintAndDiagnoseSection(context),
+                _buildComplaintAndDiagnoseSection(
+                  context,
+                  transactionData: transactionData,
+                ),
                 const SizedBox(
                   height: 40.0,
                 ),
@@ -73,7 +90,10 @@ class CheckHistoryDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDateTimeSection(BuildContext context) {
+  Widget _buildDateTimeSection(
+    BuildContext context, {
+    TransactionHistory? transactionData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,7 +110,13 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                "Minggu, 03 April 2022",
+                DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                  DateTime.parse(transactionData?.queue?.date ?? "-"),
+                ),
+                // DateFormat("dd MMMM yyyy", "id_ID").format(
+                //   DateTime.parse(data[index].queue?.date ?? "-"),
+                // )
+                // "Minggu, 03 April 2022",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -110,7 +136,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                "08.30",
+                getRandomTime(),
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -130,7 +156,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                "12",
+                transactionData?.queue?.queueNo.toString() ?? "-",
                 style: FontHelper.h8Bold(),
               ),
             ],
@@ -140,7 +166,10 @@ class CheckHistoryDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDoctorAndPolySection(BuildContext context) {
+  Widget _buildDoctorAndPolySection(
+    BuildContext context, {
+    TransactionHistory? transactionData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -157,7 +186,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                "Poli Mata",
+                transactionData?.queue?.doctorSchedule?.poly?.name ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -177,7 +206,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                "Dr. Wiwiek Sagita",
+                transactionData?.queue?.doctorSchedule?.doctor?.name ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -188,7 +217,10 @@ class CheckHistoryDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildComplaintAndDiagnoseSection(BuildContext context) {
+  Widget _buildComplaintAndDiagnoseSection(
+    BuildContext context, {
+    TransactionHistory? transactionData,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -215,7 +247,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
             ),
           ),
           child: Text(
-            Wording.complaintDummyValue,
+            transactionData?.disease ?? "-",
             style: FontHelper.h8Regular(),
           ),
         ),
@@ -245,7 +277,7 @@ class CheckHistoryDetailScreen extends StatelessWidget {
             ),
           ),
           child: Text(
-            Wording.doctorDiagnoseDummyValue,
+            transactionData?.diagnoseResult ?? "-",
             style: FontHelper.h8Regular(),
           ),
         ),

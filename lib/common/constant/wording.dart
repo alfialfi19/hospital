@@ -83,6 +83,9 @@ class Wording {
   static const String backToHome = 'Kembali ke Home';
   static const String yourQueue = 'Nomor\n$queue Anda';
   static const String save = 'Simpan';
+  static const String somethingWentWrong =
+      'Terjadi kesalahan. Silahkan coba lagi.';
+  static const String noData = 'Tidak ada data.';
 
   // PIC
   static const String queueConfirm = 'Konfirmasi Antrian';

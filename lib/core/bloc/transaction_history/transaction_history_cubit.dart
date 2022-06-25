@@ -4,21 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
 
-class DoctorScheduleCubit extends Cubit<BaseState> {
+class TransactionHistoryCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
-  final BaseDoctorScheduleRepository doctorScheduleRepository;
+  final BaseTransactionHistoryRepository transactionHistoryRepository;
 
-  DoctorScheduleCubit({
+  TransactionHistoryCubit({
     required this.localStorageClient,
-    required this.doctorScheduleRepository,
+    required this.transactionHistoryRepository,
   }) : super(InitializedState());
 
-  void getData({
-    String? day,
-    String? poly,
-  }) async {
+  void getData() async {
+    print("====> enter getData");
     emit(LoadingState());
-    List<DoctorSchedule> _results = [];
+    List<TransactionHistory> _results = [];
     Token _token;
 
     try {
@@ -42,11 +40,13 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
     }
 
     try {
-      _results = await doctorScheduleRepository.getDoctorSchedule(
+      print("====> enter getData TRY");
+      _results = await transactionHistoryRepository.getTransactionHistory(
         token: _token.accessToken!,
-        day: day,
-        polyId: poly,
       );
+      print("====> enter getData results: $_results");
+      print(
+          "====> enter getData results data: ${_results.first.diagnoseResult}");
 
       if (_results.isEmpty) {
         emit(EmptyState());
@@ -54,7 +54,7 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
     } catch (e) {
       return emit(
         ErrorState(
-          error: '$this - Get Doctor Schedule Data] - Error : $e',
+          error: '$this - Get Transaction History Data] - Error : $e',
           timestamp: DateTime.now(),
         ),
       );
