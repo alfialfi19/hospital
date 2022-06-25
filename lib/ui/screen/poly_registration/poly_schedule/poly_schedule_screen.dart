@@ -13,6 +13,7 @@ class PolyScheduleScreen extends StatefulWidget {
 
 class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
   final TextEditingController _dateInput = TextEditingController();
+  MyQueue _myQueueData = MyQueue();
 
   @override
   void initState() {
@@ -28,6 +29,15 @@ class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (ModalRoute.of(context)!.settings.arguments is UserHospital) {
+      final userData =
+          ModalRoute.of(context)!.settings.arguments as UserHospital;
+
+      _myQueueData = _myQueueData.copyWith(
+        userHospital: userData,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.queueList),
@@ -116,6 +126,10 @@ class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
                   debugPrint("Picked Date: $pickedDate");
                   debugPrint("Formatted Date: $formattedDate");
 
+                  _myQueueData = _myQueueData.copyWith(
+                    date: pickedDate.toString(),
+                  );
+
                   setState(() {
                     _dateInput.text =
                         formattedDate; //set output date to TextField value.
@@ -148,7 +162,7 @@ class _PolyScheduleScreenState extends State<PolyScheduleScreen> {
                   context,
                   RouteName.polyListScreen,
                   arguments: ScreenArgument(
-                    data: _dateInput.text,
+                    data: _myQueueData,
                   ),
                 );
               }

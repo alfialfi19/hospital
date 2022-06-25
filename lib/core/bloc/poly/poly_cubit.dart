@@ -4,18 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
 
-class TransactionHistoryCubit extends Cubit<BaseState> {
+class PolyCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
-  final BaseTransactionHistoryRepository transactionHistoryRepository;
+  final BasePolyRepository polyRepository;
 
-  TransactionHistoryCubit({
+  PolyCubit({
     required this.localStorageClient,
-    required this.transactionHistoryRepository,
+    required this.polyRepository,
   }) : super(InitializedState());
 
   void getData() async {
     emit(LoadingState());
-    List<TransactionHistory> _results = [];
+    List<Poly> _results = [];
     Token _token;
 
     try {
@@ -39,7 +39,7 @@ class TransactionHistoryCubit extends Cubit<BaseState> {
     }
 
     try {
-      _results = await transactionHistoryRepository.getTransactionHistory(
+      _results = await polyRepository.getPoly(
         token: _token.accessToken!,
       );
 
@@ -49,7 +49,7 @@ class TransactionHistoryCubit extends Cubit<BaseState> {
     } catch (e) {
       return emit(
         ErrorState(
-          error: '$this - Get Transaction History Data] - Error : $e',
+          error: '$this - Get Poly Data] - Error : $e',
           timestamp: DateTime.now(),
         ),
       );

@@ -76,6 +76,7 @@ class DoctorListItem extends StatelessWidget {
                     child: Text(
                       "${Wording.quotaAllow}${quotaAllow ?? '0'}",
                       style: FontHelper.h9Bold(),
+                      textAlign: TextAlign.end,
                     ),
                   ),
                 ),

@@ -32,11 +32,16 @@ class DoctorSchedule extends BaseModel {
       throw const FormatException('Null JSON provided');
     }
 
+    String startHour = json['start_hour'];
+    String convertedStartHour = startHour.substring(0, 5);
+    String endHour = json['end_hour'];
+    String convertedEndHour = endHour.substring(0, 5);
+
     return DoctorSchedule(
       id: json['id'],
       day: json['day'],
-      startHour: json['start_hour'],
-      endHour: json['end_hour'],
+      startHour: convertedStartHour,
+      endHour: convertedEndHour,
       quota: json['quota'],
       doctor: Doctor.fromJson(json['doctor']),
       poly: Poly.fromJson(json['poli']),

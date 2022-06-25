@@ -56,6 +56,17 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BasePolyRepository _polyRepository = PolyRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
+  final BaseCreateQueueRepository _createQueueRepository =
+      CreateQueueRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -76,6 +87,8 @@ void main() {
         transactionHistoryRepository: _transactionHistoryRepository,
         hospitalRepository: _hospitalRepository,
         notificationRepository: _notificationRepository,
+        polyRepository: _polyRepository,
+        createQueueRepository: _createQueueRepository,
       ),
     ),
     (error, stackTrace) => log(

@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:hospital/common/common.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hospital/common/common.dart';
+import 'package:intl/intl.dart';
+
+import '../../../../core/core.dart';
 import '../../../ui.dart';
 
 class DetailRegistrationScreen extends StatelessWidget {
@@ -8,61 +13,108 @@ class DetailRegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(Wording.detailQueueList),
-        backgroundColor: Palette.hospitalPrimary,
+    MyQueue? _myQueueData;
+
+    if (ModalRoute.of(context)!.settings.arguments is MyQueue) {
+      _myQueueData = ModalRoute.of(context)!.settings.arguments as MyQueue;
+      print("====> HAI HAI myQueue decode: ${json.encode(_myQueueData)}");
+    }
+
+    return BlocProvider(
+      create: (context) => CreateQueueCubit(
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        createQueueRepository: context.read<BaseCreateQueueRepository>(),
       ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            ListView(
-              padding: const EdgeInsets.all(
-                26.0,
-              ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(Wording.detailQueueList),
+          backgroundColor: Palette.hospitalPrimary,
+        ),
+        body: BlocListener<CreateQueueCubit, BaseState>(
+          listener: (context, state) {
+            print("====> this is state: $state");
+            print("====> this is state data: ${state.data}");
+          },
+          child: SafeArea(
+            child: Stack(
               children: [
-                _buildDateTimeSection(context),
-                const SizedBox(
-                  height: 20.0,
+                ListView(
+                  padding: const EdgeInsets.all(
+                    26.0,
+                  ),
+                  children: [
+                    _buildDateTimeSection(
+                      context,
+                      myQueueData: _myQueueData,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    _buildPolyAndDoctorSection(
+                      context,
+                      myQueueData: _myQueueData,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    _buildMedicalNumberSection(
+                      context,
+                      myQueueData: _myQueueData,
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    _buildDataRecheckSection(context),
+                  ],
                 ),
-                _buildPolyAndDoctorSection(context),
-                const SizedBox(
-                  height: 20.0,
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                    ),
+                    child: SquareButton(
+                      buttonText: Wording.register,
+                      textStyle: FontHelper.h7Regular(
+                        color: Palette.white,
+                      ),
+                      // onTap: () => Navigator.pushNamed(
+                      //   context,
+                      //   RouteName.myQueueScreen,
+                      //   arguments: ScreenArgument(
+                      //     data: _myQueueData,
+                      //   ),
+                      // ),
+                      onTap: () {
+                        context.read<CreateQueueCubit>().createData(
+                              myQueue: _myQueueData!,
+                            );
+
+                        Navigator.pushNamed(
+                          context,
+                          RouteName.myQueueScreen,
+                          arguments: ScreenArgument(
+                            data: _myQueueData,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-                _buildMedicalNumberSection(context),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                _buildDataRecheckSection(context),
               ],
             ),
-            Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: SquareButton(
-                  buttonText: Wording.register,
-                  textStyle: FontHelper.h7Regular(
-                    color: Palette.white,
-                  ),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteName.myQueueScreen,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildDateTimeSection(BuildContext context) {
+  Widget _buildDateTimeSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +130,9 @@ class DetailRegistrationScreen extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "Rabu, 15 Juni 2022",
+              DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                DateTime.parse(myQueueData?.date ?? "-"),
+              ),
               style: FontHelper.h7Bold(),
             ),
           ],
@@ -94,7 +148,7 @@ class DetailRegistrationScreen extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "08.00 - Selesai",
+              "${myQueueData?.doctorSchedule?.startHour ?? '-'} - ${myQueueData?.doctorSchedule?.endHour ?? '-'}",
               style: FontHelper.h7Bold(),
             ),
           ],
@@ -103,7 +157,10 @@ class DetailRegistrationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPolyAndDoctorSection(BuildContext context) {
+  Widget _buildPolyAndDoctorSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,7 +178,7 @@ class DetailRegistrationScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Gigi",
+                myQueueData?.poly?.name ?? "-",
                 style: FontHelper.h7Bold(),
               ),
             ],
@@ -140,7 +197,7 @@ class DetailRegistrationScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Dr. Andre Taulany",
+                myQueueData?.doctorSchedule?.doctor?.name ?? "-",
                 style: FontHelper.h7Bold(),
               ),
             ],
@@ -150,7 +207,10 @@ class DetailRegistrationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMedicalNumberSection(BuildContext context) {
+  Widget _buildMedicalNumberSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -162,7 +222,7 @@ class DetailRegistrationScreen extends StatelessWidget {
           height: 5.0,
         ),
         Text(
-          "MD-2019-117953",
+          "MD-${myQueueData?.userHospital?.medicalRecord ?? '-'}",
           style: FontHelper.h7Bold(),
         ),
       ],

@@ -14,8 +14,8 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
   }) : super(InitializedState());
 
   void getData({
-    String? day,
-    String? poly,
+    int? day,
+    int? poly,
   }) async {
     emit(LoadingState());
     List<DoctorSchedule> _results = [];

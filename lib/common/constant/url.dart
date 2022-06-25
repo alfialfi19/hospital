@@ -7,4 +7,6 @@ class Url {
   static const String transactionHistory = '/profile/transaction';
   static const String hospitalDetail = '/hospital';
   static const String notification = '/notification';
+  static const String polySchedule = '/poli/schedule';
+  static const String createQueue = '/queue';
 }

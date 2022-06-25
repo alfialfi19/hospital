@@ -31,31 +31,9 @@ class UserHospital extends BaseModel {
         });
 
   factory UserHospital.fromJson(Map<String, dynamic>? json) {
-    print("===> enter fromjson");
-    print("===> enter json: $json");
     if (json == null) {
       throw const FormatException('Null JSON provided');
     }
-    print("===> userData: ${json['user']}");
-    var _tes = UserHospital(
-      nik: json['nik'],
-      name: json['name'],
-      medicalRecord: json['medical_record'],
-      birthDate: json['birth_date'],
-      gender: json['gender'],
-      address: json['address'],
-      phone: json['phone'],
-      userData: UserData.fromJson(json['user']),
-    );
-    print("===> tes: $_tes");
-    print("===> tes nik: ${_tes.nik}");
-    print("===> tes name: ${_tes.name}");
-    print("===> tes medical: ${_tes.medicalRecord}");
-    print("===> tes birth: ${_tes.birthDate}");
-    print("===> tes gender: ${_tes.gender}");
-    print("===> tes address: ${_tes.address}");
-    print("===> tes phone: ${_tes.phone}");
-    print("===> tes userData: ${_tes.userData}");
 
     return UserHospital(
       nik: json['nik'],

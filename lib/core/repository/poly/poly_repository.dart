@@ -1,24 +1,22 @@
-part of 'base_doctor_schedule_repository.dart';
+part of 'base_poly_repository.dart';
 
-class DoctorScheduleRepository extends BaseDoctorScheduleRepository {
+class PolyRepository extends BasePolyRepository {
   final BaseApiClient apiClient;
   final String baseUrl;
 
-  DoctorScheduleRepository({
+  PolyRepository({
     required this.apiClient,
     required this.baseUrl,
   });
 
   @override
-  Future<List<DoctorSchedule>> getDoctorSchedule({
+  Future<List<Poly>> getPoly({
     required String token,
-    int? day,
-    int? polyId,
   }) async {
-    List<DoctorSchedule> _results = [];
+    List<Poly> _results = [];
 
     Response _fetch = await apiClient.get(
-      baseUrl + Url.doctorSchedule,
+      baseUrl + Url.polySchedule,
       token: token,
     );
 
@@ -26,7 +24,7 @@ class DoctorScheduleRepository extends BaseDoctorScheduleRepository {
       List _rawData = _fetch.data['data'];
       for (Map singleData in _rawData) {
         _results.add(
-          DoctorSchedule.fromJson(
+          Poly.fromJson(
             Map<String, dynamic>.from(singleData),
           ),
         );

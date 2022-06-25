@@ -2,6 +2,8 @@ export 'base_model.dart';
 export 'doctor/doctor.dart';
 export 'doctor_schedule/doctor_schedule.dart';
 export 'hospital/hospital.dart';
+export 'my_queue/my_queue.dart';
+export 'my_queue/my_queue.dart';
 export 'notification/notification.dart';
 export 'poly/poly.dart';
 export 'queue/queue.dart';

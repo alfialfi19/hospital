@@ -68,7 +68,10 @@ class HomeScreen extends StatelessWidget {
             height: 10.0,
           ),
           _buildHeader(context),
-          _buildMenu(context),
+          _buildMenu(
+            context,
+            userHospital: userData,
+          ),
         ],
       );
     }
@@ -121,19 +124,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              // Text(
-              //   Wording.hello + ",",
-              //   style: FontHelper.h7Regular(
-              //     color: Palette.greyLighten1,
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 10.0,
-              // ),
-              // Text(
-              //   "Rizki Alfi Ramdhani",
-              //   style: FontHelper.h6Bold(),
-              // ),
               const SizedBox(
                 height: 50.0,
               ),
@@ -211,7 +201,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenu(BuildContext context) {
+  Widget _buildMenu(
+    BuildContext context, {
+    UserHospital? userHospital,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 18.0,
@@ -227,6 +220,9 @@ class HomeScreen extends StatelessWidget {
             actionMenu: () => Navigator.pushNamed(
               context,
               RouteName.polyScheduleScreen,
+              arguments: ScreenArgument(
+                data: userData,
+              ),
             ),
           ),
           MenuItem(

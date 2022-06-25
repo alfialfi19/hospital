@@ -2,20 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
-import 'package:hospital/core/core.dart';
 
-class TransactionHistoryCubit extends Cubit<BaseState> {
+import '../../core.dart';
+
+class CreateQueueCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
-  final BaseTransactionHistoryRepository transactionHistoryRepository;
+  final BaseCreateQueueRepository createQueueRepository;
 
-  TransactionHistoryCubit({
+  CreateQueueCubit({
     required this.localStorageClient,
-    required this.transactionHistoryRepository,
+    required this.createQueueRepository,
   }) : super(InitializedState());
 
-  void getData() async {
+  void createData({
+    required MyQueue myQueue,
+  }) async {
     emit(LoadingState());
-    List<TransactionHistory> _results = [];
+    String? _resultMessage = "";
     Token _token;
 
     try {
@@ -39,25 +42,27 @@ class TransactionHistoryCubit extends Cubit<BaseState> {
     }
 
     try {
-      _results = await transactionHistoryRepository.getTransactionHistory(
+      _resultMessage = await createQueueRepository.createQueue(
         token: _token.accessToken!,
+        date: myQueue.date!,
+        doctorSchedule: myQueue.doctorSchedule!,
       );
 
-      if (_results.isEmpty) {
+      if (_resultMessage == null) {
         emit(EmptyState());
       }
     } catch (e) {
       return emit(
         ErrorState(
-          error: '$this - Get Transaction History Data] - Error : $e',
+          error: '$this - Create Queue Data] - Error : $e',
           timestamp: DateTime.now(),
         ),
       );
     }
 
     emit(
-      LoadedState(
-        data: _results,
+      SuccessState(
+        data: _resultMessage,
         timestamp: DateTime.now(),
       ),
     );

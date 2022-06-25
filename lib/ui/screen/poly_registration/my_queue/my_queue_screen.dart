@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hospital/common/common.dart';
+import 'package:intl/intl.dart';
 
 import '../../../ui.dart';
 
@@ -8,6 +11,13 @@ class MyQueueScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyQueue? _myQueueData;
+
+    if (ModalRoute.of(context)!.settings.arguments is MyQueue) {
+      _myQueueData = ModalRoute.of(context)!.settings.arguments as MyQueue;
+      print("====> FINAL myQueue decode: ${json.encode(_myQueueData)}");
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.myQueue),
@@ -21,15 +31,24 @@ class MyQueueScreen extends StatelessWidget {
                 26.0,
               ),
               children: [
-                _buildDateTimeSection(context),
+                _buildDateTimeSection(
+                  context,
+                  myQueueData: _myQueueData,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                _buildPolyAndDoctorSection(context),
+                _buildPolyAndDoctorSection(
+                  context,
+                  myQueueData: _myQueueData,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                _buildMedicalNumberSection(context),
+                _buildMedicalNumberSection(
+                  context,
+                  myQueueData: _myQueueData,
+                ),
                 const SizedBox(
                   height: 50.0,
                 ),
@@ -110,7 +129,10 @@ class MyQueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDateTimeSection(BuildContext context) {
+  Widget _buildDateTimeSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,7 +148,9 @@ class MyQueueScreen extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "Rabu, 15 Juni 2022",
+              DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                DateTime.parse(myQueueData?.date ?? "-"),
+              ),
               style: FontHelper.h7Bold(),
             ),
           ],
@@ -142,7 +166,7 @@ class MyQueueScreen extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "08.00 - Selesai",
+              "${myQueueData?.doctorSchedule?.startHour ?? '-'} - ${myQueueData?.doctorSchedule?.endHour ?? '-'}",
               style: FontHelper.h7Bold(),
             ),
           ],
@@ -151,7 +175,10 @@ class MyQueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPolyAndDoctorSection(BuildContext context) {
+  Widget _buildPolyAndDoctorSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,7 +196,7 @@ class MyQueueScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Gigi",
+                myQueueData?.poly?.name ?? "-",
                 style: FontHelper.h7Bold(),
               ),
             ],
@@ -188,7 +215,7 @@ class MyQueueScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Dr. Andre Taulany",
+                myQueueData?.doctorSchedule?.doctor?.name ?? "-",
                 style: FontHelper.h7Bold(),
               ),
             ],
@@ -198,7 +225,10 @@ class MyQueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMedicalNumberSection(BuildContext context) {
+  Widget _buildMedicalNumberSection(
+    BuildContext context, {
+    MyQueue? myQueueData,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -210,7 +240,7 @@ class MyQueueScreen extends StatelessWidget {
           height: 5.0,
         ),
         Text(
-          "MD-2019-117953",
+          "MD-${myQueueData?.userHospital?.medicalRecord ?? '-'}",
           style: FontHelper.h7Bold(),
         ),
       ],

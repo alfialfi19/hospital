@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
-import 'package:hospital/core/bloc/doctor_schedule/doctor_schedule_cubit.dart';
 import 'package:hospital/core/core.dart';
 
 import '../../ui.dart';

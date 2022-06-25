@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../core/core.dart';
 import '../../../ui.dart';
 
 class DoctorSelectionScreen extends StatelessWidget {
@@ -8,70 +11,123 @@ class DoctorSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(Wording.doctorSelection),
-        backgroundColor: Palette.hospitalPrimary,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(
-          26.0,
+    MyQueue? _myQueueData;
+
+    if (ModalRoute.of(context)!.settings.arguments is MyQueue) {
+      _myQueueData = ModalRoute.of(context)!.settings.arguments as MyQueue;
+    }
+
+    return BlocProvider(
+      create: (context) => DoctorScheduleCubit(
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        doctorScheduleRepository: context.read<BaseDoctorScheduleRepository>(),
+      )..getData(poly: _myQueueData?.poly?.id),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(Wording.doctorSelection),
+          backgroundColor: Palette.hospitalPrimary,
         ),
-        children: [
-          _buildHeaderSection(context),
-          const SizedBox(
-            height: 20.0,
+        body: ListView(
+          padding: const EdgeInsets.all(
+            26.0,
           ),
-          const SearchBar(),
-          const SizedBox(
-            height: 20.0,
-          ),
-          DoctorListItem(
-            action: () => Navigator.pushNamed(
+          children: [
+            _buildHeaderSection(
               context,
-              RouteName.detailRegistrationScreen,
+              selectedDate: _myQueueData?.date,
             ),
-            doctorName: "Dr. Andre Taulany",
-            doctorPoly: "Poli Gigi",
-            scheduleDesc: "Jam 08:00 s/d 12:00",
-            quotaAllow: "10",
-            profilePic: Images.manProfile,
-          ),
-          DoctorListItem(
-            action: () => print("Doctor 4 pressed"),
-            doctorName: "Dr. Chika Cikuwa",
-            doctorPoly: "Poli Penyakit Dalam",
-            scheduleDesc: "Jam 10:00 s/d 15:00",
-            quotaAllow: "4",
-            profilePic: Images.womanProfile,
-          ),
-          DoctorListItem(
-            action: () => print("Doctor 5 pressed"),
-            doctorName: "Dr. Najwa",
-            doctorPoly: "Poli Gigi",
-            scheduleDesc: "Jam 12:00 s/d 15:00",
-            quotaAllow: "1",
-            profilePic: Images.womanProfile,
-          ),
-          DoctorListItem(
-            action: () => print("Doctor 6 pressed"),
-            doctorName: "Dr. Siti Badriyah",
-            doctorPoly: "Poli Umum",
-            scheduleDesc: "Jam 010:00 s/d 12:00",
-            quotaAllow: "5",
-            profilePic: Images.womanProfile,
-          ),
-        ],
+            const SizedBox(
+              height: 20.0,
+            ),
+            const SearchBar(),
+            const SizedBox(
+              height: 20.0,
+            ),
+            BlocBuilder<DoctorScheduleCubit, BaseState>(
+              builder: (context, state) {
+                List<DoctorSchedule> data = [];
+
+                if (state is LoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.hospitalPrimary,
+                    ),
+                  );
+                }
+
+                if (state is ErrorState) {
+                  return Center(
+                    child: Text(
+                      Wording.somethingWentWrong,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is EmptyState) {
+                  return Center(
+                    child: Text(
+                      Wording.noData,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is LoadedState) {
+                  data = state.data;
+                }
+
+                return ListView.builder(
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return DoctorListItem(
+                      action: () {
+                        _myQueueData = _myQueueData?.copyWith(
+                          doctorSchedule: data[index],
+                        );
+
+                        Navigator.pushNamed(
+                          context,
+                          RouteName.detailRegistrationScreen,
+                          arguments: ScreenArgument(
+                            data: _myQueueData,
+                          ),
+                        );
+                      },
+                      doctorName: data[index].doctor?.name ?? "-",
+                      doctorPoly: data[index].poly?.name ?? "-",
+                      scheduleDesc:
+                          "Jam ${data[index].startHour ?? '-'} s/d ${data[index].endHour ?? '-'}",
+                      profilePic: data[index].doctor?.gender == "L"
+                          ? Images.manProfile
+                          : Images.womanProfile,
+                      quotaAllow: data[index].quota.toString(),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context) {
+  Widget _buildHeaderSection(
+    BuildContext context, {
+    String? selectedDate,
+  }) {
+    String convertedDate = DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+      DateTime.parse(selectedDate ?? "-"),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${Wording.dateVisit} -> 15 Juni 2022",
+          "${Wording.dateVisit} ->$convertedDate",
           style: FontHelper.h6Bold(),
         ),
         const SizedBox(

@@ -8,7 +8,7 @@ part 'doctor_schedule_repository.dart';
 abstract class BaseDoctorScheduleRepository {
   Future<List<DoctorSchedule>> getDoctorSchedule({
     required String token,
-    String? day,
-    String? polyId,
+    int? day,
+    int? polyId,
   });
 }

@@ -18,13 +18,6 @@ class SearchBar extends StatelessWidget {
         child: TextFormField(
           onChanged: (value) {},
           onFieldSubmitted: (String? value) => print("Search param: $value"),
-          // onFieldSubmitted: (String? value) => Navigator.pushNamed(
-          //   context,
-          //   RouteName.searchResultScreen,
-          //   arguments: ScreenArgument(
-          //     data: value,
-          //   ),
-          // ),
           decoration: InputDecoration(
             fillColor: Colors.white,
             border: OutlineInputBorder(
