@@ -25,17 +25,78 @@ class DetailRegistrationScreen extends StatelessWidget {
         localStorageClient: context.read<BaseLocalStorageClient>(),
         createQueueRepository: context.read<BaseCreateQueueRepository>(),
       ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(Wording.detailQueueList),
-          backgroundColor: Palette.hospitalPrimary,
-        ),
-        body: BlocListener<CreateQueueCubit, BaseState>(
-          listener: (context, state) {
-            print("====> this is state: $state");
-            print("====> this is state data: ${state.data}");
-          },
-          child: SafeArea(
+      child: DetailRegistrationContent(
+        myQueueData: _myQueueData,
+      ),
+    );
+  }
+}
+
+class DetailRegistrationContent extends StatelessWidget {
+  final MyQueue? myQueueData;
+
+  const DetailRegistrationContent({
+    Key? key,
+    this.myQueueData,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool _isLoading = false;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(Wording.detailQueueList),
+        backgroundColor: Palette.hospitalPrimary,
+      ),
+      body: BlocConsumer<CreateQueueCubit, BaseState>(
+        listener: (context, state) {
+          if (state is ErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Palette.red,
+                content: Text(state.data),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+
+          if (state is SuccessState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Palette.hospitalPrimary,
+                content: Text("Berhasil registrasi antrian"),
+                duration: Duration(seconds: 2),
+              ),
+            );
+
+            Future.delayed(const Duration(seconds: 2));
+
+            Navigator.pushNamed(
+              context,
+              RouteName.myQueueScreen,
+              arguments: ScreenArgument(
+                data: myQueueData?.copyWith(
+                  myQueue: state.data,
+                ),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is LoadingState) {
+            _isLoading = true;
+          }
+
+          if (state is ErrorState) {
+            _isLoading = false;
+          }
+
+          if (state is SuccessState) {
+            _isLoading = false;
+          }
+
+          return SafeArea(
             child: Stack(
               children: [
                 ListView(
@@ -45,21 +106,21 @@ class DetailRegistrationScreen extends StatelessWidget {
                   children: [
                     _buildDateTimeSection(
                       context,
-                      myQueueData: _myQueueData,
+                      myQueueData: myQueueData,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     _buildPolyAndDoctorSection(
                       context,
-                      myQueueData: _myQueueData,
+                      myQueueData: myQueueData,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     _buildMedicalNumberSection(
                       context,
-                      myQueueData: _myQueueData,
+                      myQueueData: myQueueData,
                     ),
                     const SizedBox(
                       height: 50.0,
@@ -67,46 +128,44 @@ class DetailRegistrationScreen extends StatelessWidget {
                     _buildDataRecheckSection(context),
                   ],
                 ),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                    ),
-                    child: SquareButton(
-                      buttonText: Wording.register,
-                      textStyle: FontHelper.h7Regular(
-                        color: Palette.white,
+                if (_isLoading) ...[
+                  const Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Palette.hospitalPrimary,
                       ),
-                      // onTap: () => Navigator.pushNamed(
-                      //   context,
-                      //   RouteName.myQueueScreen,
-                      //   arguments: ScreenArgument(
-                      //     data: _myQueueData,
-                      //   ),
-                      // ),
-                      onTap: () {
-                        context.read<CreateQueueCubit>().createData(
-                              myQueue: _myQueueData!,
-                            );
-
-                        Navigator.pushNamed(
-                          context,
-                          RouteName.myQueueScreen,
-                          arguments: ScreenArgument(
-                            data: _myQueueData,
-                          ),
-                        );
-                      },
                     ),
                   ),
-                ),
+                ] else ...[
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                      ),
+                      child: SquareButton(
+                        buttonText: Wording.register,
+                        textStyle: FontHelper.h7Regular(
+                          color: Palette.white,
+                        ),
+                        onTap: () {
+                          context.read<CreateQueueCubit>().createData(
+                                myQueue: myQueueData!,
+                              );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

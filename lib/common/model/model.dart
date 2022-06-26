@@ -7,6 +7,7 @@ export 'my_queue/my_queue.dart';
 export 'notification/notification.dart';
 export 'poly/poly.dart';
 export 'queue/queue.dart';
+export 'queue_registration/queue_registration.dart';
 export 'screen_argument/screen_argument.dart';
 export 'token/token.dart';
 export 'transaction_history/transaction_history.dart';

@@ -18,7 +18,9 @@ class CreateQueueCubit extends Cubit<BaseState> {
     required MyQueue myQueue,
   }) async {
     emit(LoadingState());
-    String? _resultMessage = "";
+    await Future.delayed(const Duration(seconds: 1));
+
+    QueueRegistration? _result;
     Token _token;
 
     try {
@@ -42,18 +44,19 @@ class CreateQueueCubit extends Cubit<BaseState> {
     }
 
     try {
-      _resultMessage = await createQueueRepository.createQueue(
+      _result = await createQueueRepository.createQueue(
         token: _token.accessToken!,
         date: myQueue.date!,
         doctorSchedule: myQueue.doctorSchedule!,
       );
 
-      if (_resultMessage == null) {
+      if (_result == null) {
         emit(EmptyState());
       }
     } catch (e) {
       return emit(
         ErrorState(
+          data: 'Gagal membuat antrian, silahkan coba lagi',
           error: '$this - Create Queue Data] - Error : $e',
           timestamp: DateTime.now(),
         ),
@@ -62,7 +65,7 @@ class CreateQueueCubit extends Cubit<BaseState> {
 
     emit(
       SuccessState(
-        data: _resultMessage,
+        data: _result,
         timestamp: DateTime.now(),
       ),
     );

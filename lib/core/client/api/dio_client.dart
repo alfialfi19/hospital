@@ -125,6 +125,8 @@ class DioClient extends BaseApiClient {
 
       return _returnResponse(_response);
     } on DioError catch (e) {
+      print("====>enter post catch e response: ${e.response}");
+      print("====>enter post catch e response data: ${e.response?.data}");
       if (e.type == DioErrorType.connectTimeout) {
         throw TimeoutException(e.error);
       } else if (e.type == DioErrorType.other) {
