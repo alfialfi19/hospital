@@ -33,7 +33,6 @@ class CreateQueueRepository extends BaseCreateQueueRepository {
     print("====> fetch data queue No: ${_fetch.data['data']}");
 
     if (_fetch.data != null && _fetch.data['data'] != null) {
-      // _queueNo = _fetch.data['data']['queue'];
       final _rawData = _fetch.data['data'];
       final result = json.encode(_rawData);
 

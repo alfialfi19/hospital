@@ -17,6 +17,7 @@ class App extends StatelessWidget {
   final BaseNotificationRepository notificationRepository;
   final BasePolyRepository polyRepository;
   final BaseCreateQueueRepository createQueueRepository;
+  final BaseMyQueueRepository myQueueRepository;
 
   const App({
     Key? key,
@@ -30,6 +31,7 @@ class App extends StatelessWidget {
     required this.notificationRepository,
     required this.polyRepository,
     required this.createQueueRepository,
+    required this.myQueueRepository,
   }) : super(key: key);
 
   @override
@@ -65,6 +67,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => createQueueRepository,
+        ),
+        RepositoryProvider(
+          create: (context) => myQueueRepository,
         ),
       ],
       child: MultiBlocProvider(

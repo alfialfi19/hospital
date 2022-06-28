@@ -4,6 +4,7 @@ export 'base_state.dart';
 export 'create_queue/create_queue_cubit.dart';
 export 'doctor_schedule/doctor_schedule_cubit.dart';
 export 'hospital/hospital_cubit.dart';
+export 'my_queue/my_queue_cubit.dart';
 export 'notification/notification_cubit.dart';
 export 'poly/poly_cubit.dart';
 export 'profile/profile_cubit.dart';

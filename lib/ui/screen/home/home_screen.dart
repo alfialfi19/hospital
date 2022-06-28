@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/core/core.dart';
 import 'package:hospital/ui/ui.dart';
 import 'package:intl/intl.dart';
 
@@ -15,133 +17,211 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String userType = userData?.userData?.userType ?? "-"; //it's just for dummy
 
-    Widget content;
-    Widget contentBottom;
+    return BlocProvider(
+      create: (context) => MyQueueCubit(
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        myQueueRepository: context.read<BaseMyQueueRepository>(),
+      )..getData(),
+      child: HomeContent(
+        userType: userType,
+        userData: userData,
+      ),
+    );
+  }
+}
 
-    if (userType != "USER") {
-      content = Column(
-        children: [
-          PicMenuItem(
-            icon: Icons.list_alt_outlined,
-            title: Wording.queueConfirm,
-            action: () => Navigator.pushNamed(
-              context,
-              RouteName.queueDoctorList,
-            ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          PicMenuItem(
-            icon: Icons.people_alt_rounded,
-            title: Wording.updateCheckResult,
-            action: () => Navigator.pushNamed(
-              context,
-              RouteName.updateCheckPatientList,
-            ),
-          ),
-        ],
-      );
-    } else {
-      content = Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                Wording.appTitle,
-                style: FontHelper.h7Bold(
-                  color: Palette.hospitalSecondary,
-                ),
-              ),
-              Text(
-                DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
-                  DateTime.now(),
-                ),
-                style: FontHelper.h7Regular(
-                  color: Palette.hospitalSecondary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          _buildHeader(context),
-          _buildMenu(
-            context,
-            userHospital: userData,
-          ),
-        ],
-      );
-    }
+class HomeContent extends StatelessWidget {
+  final UserHospital? userData;
+  final String? userType;
 
-    if (userType != "USER") {
-      contentBottom = Container();
-    } else {
-      contentBottom = _buildBottom(context);
-    }
+  const HomeContent({
+    Key? key,
+    this.userData,
+    this.userType,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          ListView(
-            padding: const EdgeInsets.all(
-              26.0,
-            ),
+      body: BlocBuilder<MyQueueCubit, BaseState>(
+        builder: (context, state) {
+          Queue? data;
+          bool _isEmpty = false;
+
+          if (state is LoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Palette.hospitalPrimary,
+              ),
+            );
+          }
+
+          if (state is ErrorState) {
+            // return Center(
+            //   child: Text(
+            //     Wording.somethingWentWrong,
+            //     style: FontHelper.h7Regular(),
+            //   ),
+            // );
+            _isEmpty = true;
+          }
+
+          if (state is EmptyState) {
+            // return Center(
+            //   child: Text(
+            //     Wording.noData,
+            //     style: FontHelper.h7Regular(),
+            //   ),
+            // );
+            _isEmpty = true;
+          }
+
+          if (state is LoadedState) {
+            data = state.data;
+          }
+
+          return Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ListView(
+                padding: const EdgeInsets.all(
+                  26.0,
+                ),
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        Wording.hello + ",",
-                        style: FontHelper.h7Regular(
-                          color: Palette.greyLighten1,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            Wording.hello + ",",
+                            style: FontHelper.h7Regular(
+                              color: Palette.greyLighten1,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            userData?.name?.capitalize() ?? "-",
+                            style: FontHelper.h6Bold(),
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          RouteName.notificationScreen,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        userData?.name?.capitalize() ?? "-",
-                        style: FontHelper.h6Bold(),
+                        child: const Icon(
+                          Icons.add_alert_rounded,
+                          color: Palette.hospitalPrimary,
+                          size: 26.0,
+                        ),
                       ),
                     ],
                   ),
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      RouteName.notificationScreen,
-                    ),
-                    child: const Icon(
-                      Icons.add_alert_rounded,
-                      color: Palette.hospitalPrimary,
-                      size: 26.0,
-                    ),
+                  const SizedBox(
+                    height: 50.0,
                   ),
+                  if (userType == 'USER') ...[
+                    _buildUserContent(
+                      context,
+                      myQueue: data,
+                    ),
+                  ] else ...[
+                    _buildPICContent(context),
+                  ],
                 ],
               ),
-              const SizedBox(
-                height: 50.0,
+              Positioned(
+                bottom: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: userType == 'USER'
+                    ? _buildBottom(
+                        context,
+                        myQueue: data,
+                      )
+                    : Container(),
               ),
-              content,
             ],
-          ),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: contentBottom,
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildPICContent(BuildContext context) {
+    return Column(
+      children: [
+        PicMenuItem(
+          icon: Icons.list_alt_outlined,
+          title: Wording.queueConfirm,
+          action: () => Navigator.pushNamed(
+            context,
+            RouteName.queueDoctorList,
+          ),
+        ),
+        const SizedBox(
+          height: 10.0,
+        ),
+        PicMenuItem(
+          icon: Icons.people_alt_rounded,
+          title: Wording.updateCheckResult,
+          action: () => Navigator.pushNamed(
+            context,
+            RouteName.updateCheckPatientList,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserContent(
+    BuildContext context, {
+    Queue? myQueue,
+  }) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              Wording.appTitle,
+              style: FontHelper.h7Bold(
+                color: Palette.hospitalSecondary,
+              ),
+            ),
+            Text(
+              DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                DateTime.now(),
+              ),
+              style: FontHelper.h7Regular(
+                color: Palette.hospitalSecondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10.0,
+        ),
+        _buildHeader(
+          context,
+          myQueue: myQueue,
+        ),
+        _buildMenu(
+          context,
+          userHospital: userData,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context, {
+    Queue? myQueue,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 18.0,
@@ -160,7 +240,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Poli Mata",
+                myQueue?.doctorSchedule?.poly?.name ?? "-",
                 style: FontHelper.h7Regular(
                   color: Palette.white,
                 ),
@@ -169,7 +249,7 @@ class HomeScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "Dr. Wiwiek Sagita",
+                myQueue?.doctorSchedule?.doctor?.name ?? "-",
                 style: FontHelper.h7Bold(
                   color: Palette.white,
                 ),
@@ -189,7 +269,7 @@ class HomeScreen extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                "10",
+                myQueue?.queueNo.toString() ?? "-",
                 style: FontHelper.h5Bold(
                   color: Palette.white,
                 ),
@@ -259,7 +339,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottom(BuildContext context) {
+  Widget _buildBottom(BuildContext context, {Queue? myQueue}) {
     return Container(
       color: Palette.hospitalPrimary,
       padding: const EdgeInsets.all(
@@ -275,7 +355,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Text(
-            "5",
+            myQueue?.currentQueue.toString() ?? "0",
             style: FontHelper.h6Bold(
               color: Palette.white,
             ),

@@ -67,6 +67,11 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BaseMyQueueRepository _myQueueRepository = MyQueueRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -89,6 +94,7 @@ void main() {
         notificationRepository: _notificationRepository,
         polyRepository: _polyRepository,
         createQueueRepository: _createQueueRepository,
+        myQueueRepository: _myQueueRepository,
       ),
     ),
     (error, stackTrace) => log(

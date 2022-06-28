@@ -32,9 +32,9 @@ class DoctorSchedule extends BaseModel {
       throw const FormatException('Null JSON provided');
     }
 
-    String startHour = json['start_hour'];
+    String startHour = json['start_hour'] ?? "0000-00-00";
     String convertedStartHour = startHour.substring(0, 5);
-    String endHour = json['end_hour'];
+    String endHour = json['end_hour'] ?? "0000-00-00";
     String convertedEndHour = endHour.substring(0, 5);
 
     return DoctorSchedule(
