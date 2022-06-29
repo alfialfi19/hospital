@@ -32,8 +32,22 @@ dependencies:
   shared_preferences: ^2.0.6
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
+
+  # Generator
+  build_runner:
+
+  # Integration Test
+  integration_test:
+    sdk: flutter
+
+  # Unit Testing
+  bloc_test: ^8.1.0
+  mockito: ^5.0.15
+  mocktail: ^0.1.4
 
   flutter_lints: ^1.0.0
 

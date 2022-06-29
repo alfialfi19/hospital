@@ -79,6 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
           }
 
           return Scaffold(
+            key: const Key(UIKeys.signInScreenView),
             appBar: AppBar(
               backgroundColor: Palette.hospitalPrimary,
             ),
@@ -109,6 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(
                       height: 40.0,
                       child: TextField(
+                        key: const Key(UIKeys.signInFormEmailField),
                         controller: edtEmail,
                         decoration: InputDecoration(
                           labelText: Wording.email,
@@ -139,6 +141,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(
                       height: 40.0,
                       child: TextField(
+                        key: const Key(UIKeys.signInFormPasswordField),
                         controller: edtPassword,
                         obscureText: true,
                         decoration: InputDecoration(
@@ -169,12 +172,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     if (_isLoading) ...[
                       const Center(
+                        key: Key(UIKeys.signInScreenLoadingContainer),
                         child: CircularProgressIndicator(
                           color: Palette.hospitalPrimary,
                         ),
                       ),
                     ] else ...[
                       PrimaryButton(
+                        key: const Key(UIKeys.signInFormButton),
                         buttonText: Wording.login,
                         onTap: () {
                           context.read<SignInCubit>().signInWithEmail(
