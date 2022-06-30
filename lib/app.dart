@@ -90,6 +90,7 @@ class App extends StatelessWidget {
             create: (context) => SignInCubit(
               localStorageClient: localStorageClient,
               authenticationRepository: context.read<BaseSignInRepository>(),
+              profileRepository: context.read<BaseProfileRepository>(),
             ),
           ),
         ],

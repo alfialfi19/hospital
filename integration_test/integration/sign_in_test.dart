@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hospital/app.dart';
 import 'package:hospital/common/common.dart';
+import 'package:hospital/ui/ui.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../test/mock/mock.dart';
@@ -97,6 +99,33 @@ void main() {
             'redirect to Landing Screen', (WidgetTester tester) async {
           await pumpAppWithMockedDependency(tester);
           await tester.pumpAndSettle();
+
+          // Splash Screen loaded
+          expect(find.byType(SplashScreen), findsOneWidget);
+
+          // Necessary delay for integration testing
+          await Future.delayed(const Duration(seconds: 5));
+
+          // Sign in screen loaded
+          await expectLater(find.byType(SignInScreen), findsOneWidget);
+
+          // Fill email
+          await tester.enterText(
+            find.byKey(
+              const Key(UIKeys.signInFormEmailField),
+            ),
+            'tes@tes.com',
+          );
+          await tester.pump(const Duration(milliseconds: 250));
+
+          // Fill password
+          await tester.enterText(
+            find.byKey(
+              const Key(UIKeys.signInFormPasswordField),
+            ),
+            'tes123',
+          );
+          await tester.pump(const Duration(milliseconds: 250));
         });
       });
 

@@ -7,10 +7,12 @@ import 'package:hospital/core/core.dart';
 class SignInCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
   final BaseSignInRepository authenticationRepository;
+  final BaseProfileRepository profileRepository;
 
   SignInCubit({
     required this.localStorageClient,
     required this.authenticationRepository,
+    required this.profileRepository,
   }) : super(InitializedState());
 
   Future<void> signInWithEmail({
@@ -19,13 +21,14 @@ class SignInCubit extends Cubit<BaseState> {
   }) async {
     emit(LoadingState());
     Token? token;
+    UserHospital? _newUserHospital;
 
     try {
       if (email == null ||
           email.isEmpty ||
           password == null ||
           password.isEmpty) {
-        emit(
+        return emit(
           ErrorState(error: 'Email / password isEmpty'),
         );
         return;
@@ -36,17 +39,17 @@ class SignInCubit extends Cubit<BaseState> {
         );
 
         if (token == null) {
-          emit(
+          return emit(
             ErrorState(error: 'Token result is null'),
           );
           return;
         }
       }
     } catch (e) {
-      emit(ErrorState(error: '$this: $e'));
+      return emit(ErrorState(error: '$this: $e'));
     }
 
-    var tokenEncoded = jsonEncode(token?.toJson());
+    var tokenEncoded = jsonEncode(token.toJson());
 
     localStorageClient.saveByKey(
       tokenEncoded,
@@ -54,9 +57,35 @@ class SignInCubit extends Cubit<BaseState> {
       SharedPrefType.string,
     );
 
+    try {
+      _newUserHospital = await profileRepository.getUserProfile(
+        token: token.accessToken!,
+      );
+
+      if (_newUserHospital == null) {
+        throw Exception();
+      }
+    } catch (e) {
+      emit(
+        ErrorState(
+          error: '$this - Get Profile Data] - Error : $e',
+          timestamp: DateTime.now(),
+        ),
+      );
+      return;
+    }
+
+    await localStorageClient.saveByKey(
+      jsonEncode(
+        _newUserHospital.toJson(),
+      ),
+      SharedPrefKey.userData,
+      SharedPrefType.string,
+    );
+
     emit(
       SuccessState(
-        data: token,
+        data: _newUserHospital,
         timestamp: DateTime.now(),
       ),
     );

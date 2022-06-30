@@ -34,24 +34,26 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
       child: BlocConsumer<SignInCubit, BaseState>(
         listener: (context, state) {
+          UserHospital? user;
+
           if (state is SuccessState) {
-            context.read<ProfileCubit>().getData();
+            user = state.data;
 
             Navigator.pushReplacementNamed(
               context,
               RouteName.landingScreen,
-              // arguments: ScreenArgument(
-              //   data: UserHospital(
-              //     nik: state.data?.nik,
-              //     name: user?.name,
-              //     medicalRecord: user?.medicalRecord,
-              //     birthDate: user?.birthDate,
-              //     gender: user?.gender,
-              //     address: user?.address,
-              //     phone: user?.phone,
-              //     userData: user?.userData,
-              //   ),
-              // ),
+              arguments: ScreenArgument(
+                data: UserHospital(
+                  nik: user?.nik,
+                  name: user?.name,
+                  medicalRecord: user?.medicalRecord,
+                  birthDate: user?.birthDate,
+                  gender: user?.gender,
+                  address: user?.address,
+                  phone: user?.phone,
+                  userData: user?.userData,
+                ),
+              ),
             );
           } else if (state is ErrorState) {
             if (state.error.isNotEmpty) {
