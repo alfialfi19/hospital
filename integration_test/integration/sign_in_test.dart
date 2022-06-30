@@ -110,7 +110,7 @@ void main() {
         expect(find.byType(SplashScreen), findsOneWidget);
 
         // Necessary delay for integration testing
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(seconds: 3));
 
         // Tap sign in screen button
         await tester.tap(
@@ -199,7 +199,7 @@ void main() {
 
         // Landing screen loaded
         await expectLater(find.byType(LandingScreen), findsOneWidget);
-        await tester.pump(const Duration(seconds: 3));
+        await tester.pump(const Duration(seconds: 5));
 
         // Tap profile screen
         await tester.tap(
@@ -207,7 +207,7 @@ void main() {
             const Key(UIKeys.discoverProfileTabInActive),
           ),
         );
-        await tester.pump(const Duration(milliseconds: 3000));
+        await tester.pump(const Duration(milliseconds: 5000));
       });
     });
 
@@ -222,7 +222,7 @@ void main() {
         expect(find.byType(SplashScreen), findsOneWidget);
 
         // Necessary delay for integration testing
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(seconds: 3));
 
         // Tap sign in screen button
         await tester.tap(
