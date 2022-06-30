@@ -2,6 +2,10 @@ class UIKeys {
   // Splash Screen
   static const splashScreenView = '__splashScreenView__';
 
+  // Welcome Screen
+  static const signInScreenButton = '__signInScreenButton__';
+  static const signUpScreenButton = '__signUpScreenButton__';
+
   // Sign In Screen
   static const signInScreenView = '__signInScreenView__';
   static const signInFormButton = '__signInFormButton__';
@@ -30,4 +34,7 @@ class UIKeys {
       '__homeMenuCurrentQueueSuccessContainer__';
   static const homeMenuCurrentQueueErrorContainer =
       '__homeMenuCurrentQueueErrorContainer__';
+
+  // Profile Screen
+  static const signOutButton = '__signOutButton__';
 }

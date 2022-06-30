@@ -144,6 +144,7 @@ class ProfileScreen extends StatelessWidget {
           height: 10.0,
         ),
         ProfileAction(
+          key: const Key(UIKeys.signOutButton),
           iconAction: Icons.arrow_right_alt_rounded,
           titleAction: Wording.logout,
           action: () => context.read<SignInCubit>().signOut(),

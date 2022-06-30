@@ -41,6 +41,7 @@ class LandingScreen extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                 icon: SizedBox(
+                  key: const Key(UIKeys.discoverHomeTabInActive),
                   width: 24.0,
                   height: 24.0,
                   child: Opacity(
@@ -55,6 +56,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
                 activeIcon: SizedBox(
+                  key: const Key(UIKeys.discoverHomeTabActive),
                   width: 24.0,
                   height: 24.0,
                   child: Container(
@@ -69,6 +71,7 @@ class LandingScreen extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: SizedBox(
+                  key: const Key(UIKeys.discoverProfileTabInActive),
                   width: 24.0,
                   height: 24.0,
                   child: Opacity(
@@ -83,6 +86,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
                 activeIcon: SizedBox(
+                  key: const Key(UIKeys.discoverProfileTabActive),
                   width: 24.0,
                   height: 24.0,
                   child: Container(

@@ -34,6 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                 height: 90.0,
               ),
               PrimaryButton(
+                key: const Key(UIKeys.signInScreenButton),
                 buttonText: Wording.login,
                 onTap: () => Navigator.pushNamed(
                   context,
@@ -44,6 +45,7 @@ class WelcomeScreen extends StatelessWidget {
                 height: 10.0,
               ),
               PrimaryButton(
+                key: const Key(UIKeys.signUpScreenButton),
                 buttonText: Wording.register,
                 textStyle: FontHelper.h7Regular(
                   color: Palette.hospitalPrimary,
