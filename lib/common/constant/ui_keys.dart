@@ -37,4 +37,18 @@ class UIKeys {
 
   // Profile Screen
   static const signOutButton = '__signOutButton__';
+
+  // Transaction History
+  static const transactionHistoryMenu = '__transactionHistoryMenu__';
+  static cardItemTransactionHistory(int index) =>
+      '__cardItemTransactionHistory${index}__';
+  static const transactionHistoryListErrorContainer =
+      '__transactionHistoryListErrorContainer__';
+  static const transactionHistoryListEmptyContainer =
+      '__transactionHistoryListEmptyContainer__';
+
+  static cardItemTransactionHistoryAction(int index) =>
+      '__cardItemTransactionHistoryAction${index}__';
+  static const transactionHistoryDetailContainer =
+      '__transactionHistoryDetailContainer__';
 }

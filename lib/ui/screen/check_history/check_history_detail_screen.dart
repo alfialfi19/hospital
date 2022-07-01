@@ -22,6 +22,7 @@ class CheckHistoryDetailScreen extends StatelessWidget with RandomMixin {
         backgroundColor: Palette.hospitalPrimary,
       ),
       body: SafeArea(
+        key: const Key(UIKeys.transactionHistoryDetailContainer),
         child: Stack(
           children: [
             ListView(

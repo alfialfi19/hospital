@@ -44,7 +44,7 @@ class TransactionHistoryCubit extends Cubit<BaseState> {
       );
 
       if (_results.isEmpty) {
-        emit(EmptyState());
+        return emit(EmptyState());
       }
     } catch (e) {
       return emit(

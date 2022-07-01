@@ -314,6 +314,7 @@ class HomeContent extends StatelessWidget {
             ),
           ),
           MenuItem(
+            key: const Key(UIKeys.transactionHistoryMenu),
             textMenu: Wording.checkHistory,
             iconMenu: Icons.bar_chart,
             actionMenu: () => Navigator.pushNamed(

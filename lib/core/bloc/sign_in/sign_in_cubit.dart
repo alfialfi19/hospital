@@ -31,7 +31,6 @@ class SignInCubit extends Cubit<BaseState> {
         return emit(
           ErrorState(error: 'Email / password isEmpty'),
         );
-        return;
       } else {
         token = await authenticationRepository.signInWithEmail(
           email: email,
@@ -42,7 +41,6 @@ class SignInCubit extends Cubit<BaseState> {
           return emit(
             ErrorState(error: 'Token result is null'),
           );
-          return;
         }
       }
     } catch (e) {

@@ -40,6 +40,7 @@ class CheckHistoryListScreen extends StatelessWidget with RandomMixin {
 
                 if (state is ErrorState) {
                   return Center(
+                    key: const Key(UIKeys.transactionHistoryListErrorContainer),
                     child: Text(
                       Wording.somethingWentWrong,
                       style: FontHelper.h7Regular(),
@@ -49,6 +50,7 @@ class CheckHistoryListScreen extends StatelessWidget with RandomMixin {
 
                 if (state is EmptyState) {
                   return Center(
+                    key: const Key(UIKeys.transactionHistoryListEmptyContainer),
                     child: Text(
                       Wording.noData,
                       style: FontHelper.h7Regular(),
@@ -66,6 +68,9 @@ class CheckHistoryListScreen extends StatelessWidget with RandomMixin {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     return CheckHistoryItem(
+                      key: Key(UIKeys.cardItemTransactionHistory(index)),
+                      actionKey:
+                          Key(UIKeys.cardItemTransactionHistoryAction(index)),
                       polyValue:
                           data[index].queue?.doctorSchedule?.poly?.name ?? "-",
                       dateTimeValue: DateFormat("dd MMMM yyyy", "id_ID").format(

@@ -8,6 +8,7 @@ class CheckHistoryItem extends StatelessWidget {
   final String? dateTimeValue;
   final String? doctorName;
   final VoidCallback? action;
+  final Key? actionKey;
 
   const CheckHistoryItem({
     Key? key,
@@ -15,6 +16,7 @@ class CheckHistoryItem extends StatelessWidget {
     this.dateTimeValue,
     this.doctorName,
     this.action,
+    this.actionKey,
   }) : super(key: key);
 
   @override
@@ -72,6 +74,7 @@ class CheckHistoryItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: SquareButton(
+              key: actionKey,
               buttonText: Wording.seeDetail,
               onTap: () => action != null ? action!.call() : null,
             ),
