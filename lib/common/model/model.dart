@@ -5,6 +5,8 @@ export 'hospital/hospital.dart';
 export 'my_queue/my_queue.dart';
 export 'my_queue/my_queue.dart';
 export 'notification/notification.dart';
+export 'pic_confirm_queue/pic_confirm_queue.dart';
+export 'pic_schedule/pic_schedule.dart';
 export 'poly/poly.dart';
 export 'queue/queue.dart';
 export 'queue_registration/queue_registration.dart';

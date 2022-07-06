@@ -10,5 +10,6 @@ abstract class BaseDoctorScheduleRepository {
     required String token,
     int? day,
     int? polyId,
+    required bool isPIC,
   });
 }

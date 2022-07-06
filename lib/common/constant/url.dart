@@ -9,4 +9,7 @@ class Url {
   static const String notification = '/notification';
   static const String polySchedule = '/poli/schedule';
   static const String createQueue = '/queue';
+
+  // PIC
+  static const String picPolySchedule = '/pic-poli/schedule';
 }

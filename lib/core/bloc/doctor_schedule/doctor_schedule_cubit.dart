@@ -16,6 +16,7 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
   void getData({
     int? day,
     int? poly,
+    bool isPIC = false,
   }) async {
     emit(LoadingState());
     List<DoctorSchedule> _results = [];
@@ -42,11 +43,15 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
     }
 
     try {
+      print("===> masuk try");
+      print("===> masuk isPIC: $isPIC");
       _results = await doctorScheduleRepository.getDoctorSchedule(
         token: _token.accessToken!,
         day: day,
         polyId: poly,
+        isPIC: isPIC,
       );
+      print("===> masuk results: $_results");
 
       if (_results.isEmpty) {
         emit(EmptyState());

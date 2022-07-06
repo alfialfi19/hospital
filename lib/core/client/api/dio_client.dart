@@ -38,7 +38,9 @@ class DioClient extends BaseApiClient {
       );
 
       return _returnResponse(_response);
-    } on DioError catch (e) {
+    } on DioError catch (e, s) {
+      print("===?e: $e");
+      print("===?s: $s");
       if (e.type == DioErrorType.connectTimeout) {
         throw TimeoutException(e.error);
       } else if (e.type == DioErrorType.other) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 
+import '../../../core/core.dart';
 import '../../ui.dart';
 
 class QueueDoctorList extends StatelessWidget {
@@ -8,45 +10,109 @@ class QueueDoctorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(Wording.doctorList),
-        backgroundColor: Palette.hospitalPrimary,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(
-          26.0,
+    return BlocProvider(
+      create: (context) => DoctorScheduleCubit(
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        doctorScheduleRepository: context.read<BaseDoctorScheduleRepository>(),
+      )..getData(isPIC: true),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(Wording.doctorList),
+          backgroundColor: Palette.hospitalPrimary,
         ),
-        children: [
-          _buildHeaderSection(context),
-          const SizedBox(
-            height: 20.0,
+        body: ListView(
+          padding: const EdgeInsets.all(
+            26.0,
           ),
-          const SearchBar(),
-          const SizedBox(
-            height: 20.0,
-          ),
-          DoctorListItem(
-            action: () => Navigator.pushNamed(
-              context,
-              RouteName.queueList,
+          children: [
+            _buildHeaderSection(context),
+            const SizedBox(
+              height: 20.0,
             ),
-            doctorName: "Dr. Andre Taulany",
-            doctorPoly: "",
-            scheduleDesc: "Jam 08:00 s/d 12:00",
-            profilePic: Images.manProfile,
-          ),
-          DoctorListItem(
-            action: () => Navigator.pushNamed(
-              context,
-              RouteName.queueList,
+            const SearchBar(),
+            const SizedBox(
+              height: 20.0,
             ),
-            doctorName: "Dr. Siti Badriyah",
-            doctorPoly: "",
-            scheduleDesc: "Jam 09:00 s/d 12:00",
-            profilePic: Images.womanProfile,
-          ),
-        ],
+            BlocBuilder<DoctorScheduleCubit, BaseState>(
+              builder: (context, state) {
+                List<DoctorSchedule> data = [];
+
+                if (state is LoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.hospitalPrimary,
+                    ),
+                  );
+                }
+
+                if (state is ErrorState) {
+                  return Center(
+                    child: Text(
+                      Wording.somethingWentWrong,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is EmptyState) {
+                  return Center(
+                    child: Text(
+                      Wording.noData,
+                      style: FontHelper.h7Regular(),
+                    ),
+                  );
+                }
+
+                if (state is LoadedState) {
+                  data = state.data;
+                }
+
+                return ListView.builder(
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return DoctorListItem(
+                      action: () => Navigator.pushNamed(
+                        context,
+                        RouteName.queueList,
+                      ),
+                      doctorName: data[index].doctor?.name ?? "-",
+                      doctorPoly: data[index].poly?.name ?? "-",
+                      scheduleDesc:
+                          "Jam ${data[index].startHour ?? '-'} s/d ${data[index].endHour ?? '-'}",
+                      profilePic: data[index].doctor?.gender == "L"
+                          ? Images.manProfile
+                          : Images.womanProfile,
+                    );
+                  },
+                );
+              },
+            ),
+            // DoctorListItem(
+            //   action: () =>
+            //       Navigator.pushNamed(
+            //         context,
+            //         RouteName.queueList,
+            //       ),
+            //   doctorName: "Dr. Andre Taulany",
+            //   doctorPoly: "",
+            //   scheduleDesc: "Jam 08:00 s/d 12:00",
+            //   profilePic: Images.manProfile,
+            // ),
+            // DoctorListItem(
+            //   action: () =>
+            //       Navigator.pushNamed(
+            //         context,
+            //         RouteName.queueList,
+            //       ),
+            //   doctorName: "Dr. Siti Badriyah",
+            //   doctorPoly: "",
+            //   scheduleDesc: "Jam 09:00 s/d 12:00",
+            //   profilePic: Images.womanProfile,
+            // ),
+          ],
+        ),
       ),
     );
   }
