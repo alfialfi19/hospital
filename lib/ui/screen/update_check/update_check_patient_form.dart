@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/common/common.dart';
+import 'package:intl/intl.dart';
 
 import '../../ui.dart';
 
@@ -30,6 +31,18 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
 
   @override
   Widget build(BuildContext context) {
+    PicSchedule? _picSchedule;
+    Poly? _poly;
+    int? _queueNo;
+
+    if (ModalRoute.of(context)!.settings.arguments is Map) {
+      var mapData = ModalRoute.of(context)!.settings.arguments as Map;
+
+      _picSchedule = mapData['pic_schedule'];
+      _poly = mapData['poly'];
+      _queueNo = mapData['queue_no'];
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.updateCheckResult),
@@ -43,15 +56,30 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 26.0,
               ),
               children: [
-                _buildDateTimeSection(context),
+                _buildDateTimeSection(
+                  context,
+                  _picSchedule,
+                  _poly,
+                  _queueNo,
+                ),
                 const SizedBox(
                   height: 30.0,
                 ),
-                _buildDoctorAndPolySection(context),
+                _buildDoctorAndPolySection(
+                  context,
+                  _picSchedule,
+                  _poly,
+                  _queueNo,
+                ),
                 const SizedBox(
                   height: 30.0,
                 ),
-                _buildIdAndQueueNoSection(context),
+                _buildIdAndQueueNoSection(
+                  context,
+                  _picSchedule,
+                  _poly,
+                  _queueNo,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -89,7 +117,12 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     );
   }
 
-  Widget _buildDateTimeSection(BuildContext context) {
+  Widget _buildDateTimeSection(
+    BuildContext context,
+    PicSchedule? schedule,
+    Poly? poly,
+    int? queueNo,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,7 +139,9 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                "Minggu, 03 April 2022",
+                DateFormat("EEEE, dd MMMM yyyy", "id_ID").format(
+                  DateTime.now(),
+                ),
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -126,7 +161,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                "08.30",
+                schedule?.startHour ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -137,7 +172,12 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     );
   }
 
-  Widget _buildDoctorAndPolySection(BuildContext context) {
+  Widget _buildDoctorAndPolySection(
+    BuildContext context,
+    PicSchedule? schedule,
+    Poly? poly,
+    int? queueNo,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -154,7 +194,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                "Poli Mata",
+                poly?.name ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -174,7 +214,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                "Dr. Wiwiek Sagita",
+                schedule?.doctor?.name ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -185,7 +225,12 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     );
   }
 
-  Widget _buildIdAndQueueNoSection(BuildContext context) {
+  Widget _buildIdAndQueueNoSection(
+    BuildContext context,
+    PicSchedule? schedule,
+    Poly? poly,
+    int? queueNo,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -222,7 +267,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                "24",
+                queueNo.toString(),
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),

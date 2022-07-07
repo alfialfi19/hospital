@@ -7,6 +7,7 @@ class PatientListItem extends StatelessWidget {
   final String? profilePic;
   final String? patientName;
   final String? queueNumber;
+  final bool isFinish;
   final VoidCallback? action;
 
   const PatientListItem({
@@ -14,6 +15,7 @@ class PatientListItem extends StatelessWidget {
     this.profilePic,
     this.patientName,
     this.queueNumber,
+    this.isFinish = false,
     this.action,
   }) : super(key: key);
 
@@ -26,13 +28,13 @@ class PatientListItem extends StatelessWidget {
           bottom: 20.0,
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: 60.0,
               width: 60.0,
               child: Image.asset(
-                profilePic ?? Images.manProfile,
+                profilePic == "L" ? Images.manProfile : Images.womanProfile,
                 fit: BoxFit.contain,
               ),
             ),
@@ -59,6 +61,26 @@ class PatientListItem extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(
+              width: 100.0,
+            ),
+            if (isFinish) ...[
+              const SizedBox(
+                width: 30.0,
+                child: Icon(
+                  Icons.check,
+                  color: Palette.hospitalPrimary,
+                ),
+              ),
+            ] else ...[
+              const SizedBox(
+                width: 30.0,
+                child: Icon(
+                  Icons.query_builder,
+                  color: Palette.red,
+                ),
+              ),
+            ],
           ],
         ),
       ),

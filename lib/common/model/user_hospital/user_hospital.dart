@@ -9,6 +9,7 @@ class UserHospital extends BaseModel {
   final String? address;
   final String? phone;
   final UserData? userData;
+  final Poly? poly;
 
   UserHospital({
     this.nik,
@@ -19,6 +20,7 @@ class UserHospital extends BaseModel {
     this.address,
     this.phone,
     this.userData,
+    this.poly,
   }) : super({
           "nik": nik,
           "name": name,
@@ -28,6 +30,7 @@ class UserHospital extends BaseModel {
           "address": address,
           "phone": phone,
           "user": userData,
+          "poli": poly,
         });
 
   factory UserHospital.fromJson(Map<String, dynamic>? json) {

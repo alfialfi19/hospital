@@ -37,6 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
           UserHospital? user;
 
           if (state is SuccessState) {
+            _isLoading = false;
+
             user = state.data;
 
             Navigator.pushReplacementNamed(
@@ -64,6 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   duration: const Duration(seconds: 2),
                 ),
               );
+
+              _isLoading = false;
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -72,6 +76,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   duration: Duration(seconds: 2),
                 ),
               );
+
+              _isLoading = false;
             }
           }
         },

@@ -14,22 +14,13 @@ class DoctorScheduleRepository extends BaseDoctorScheduleRepository {
     required String token,
     int? day,
     int? polyId,
-    required bool isPIC,
   }) async {
     List<DoctorSchedule> _results = [];
-    Response _fetch;
 
-    if (!isPIC) {
-      _fetch = await apiClient.get(
-        baseUrl + Url.doctorSchedule,
-        token: token,
-      );
-    } else {
-      _fetch = await apiClient.get(
-        baseUrl + Url.picPolySchedule,
-        token: token,
-      );
-    }
+    Response _fetch = await apiClient.get(
+      baseUrl + Url.doctorSchedule,
+      token: token,
+    );
     print("===> masuk fetch: $_fetch");
 
     if (_fetch.data != null && _fetch.data['data'] != null) {

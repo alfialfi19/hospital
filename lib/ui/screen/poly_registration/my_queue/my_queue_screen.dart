@@ -77,7 +77,7 @@ class MyQueueScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "10",
+                          "1",
                           style: FontHelper.h3Bold(
                             color: Palette.white,
                           ),
@@ -114,11 +114,11 @@ class MyQueueScreen extends StatelessWidget {
                     color: Palette.white,
                   ),
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      RouteName.landingScreen,
-                      (route) => false,
-                    );
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ),

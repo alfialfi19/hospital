@@ -4,21 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:hospital/core/core.dart';
 
-class DoctorScheduleCubit extends Cubit<BaseState> {
+class PicScheduleDetailCubit extends Cubit<BaseState> {
   final BaseLocalStorageClient localStorageClient;
-  final BaseDoctorScheduleRepository doctorScheduleRepository;
+  final BasePicScheduleDetailRepository picScheduleDetailRepository;
 
-  DoctorScheduleCubit({
+  PicScheduleDetailCubit({
     required this.localStorageClient,
-    required this.doctorScheduleRepository,
+    required this.picScheduleDetailRepository,
   }) : super(InitializedState());
 
   void getData({
-    int? day,
-    int? poly,
+    required int scheduleId,
   }) async {
     emit(LoadingState());
-    List<DoctorSchedule> _results = [];
+    PicScheduleDetail? _result;
     Token _token;
 
     try {
@@ -42,19 +41,18 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
     }
 
     try {
-      _results = await doctorScheduleRepository.getDoctorSchedule(
+      _result = await picScheduleDetailRepository.getPicScheduleDetail(
         token: _token.accessToken!,
-        day: day,
-        polyId: poly,
+        scheduleId: scheduleId,
       );
 
-      if (_results.isEmpty) {
-        emit(EmptyState());
+      if (_result == null) {
+        return emit(EmptyState());
       }
     } catch (e) {
       return emit(
         ErrorState(
-          error: '$this - Get Doctor Schedule Data] - Error : $e',
+          error: '$this - Get PIC Schedule byID Data] - Error : $e',
           timestamp: DateTime.now(),
         ),
       );
@@ -62,7 +60,7 @@ class DoctorScheduleCubit extends Cubit<BaseState> {
 
     emit(
       LoadedState(
-        data: _results,
+        data: _result,
         timestamp: DateTime.now(),
       ),
     );

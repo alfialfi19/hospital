@@ -72,6 +72,24 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BasePicConfirmQueueRepository _picConfirmQueueRepository =
+      PicConfirmQueueRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
+  final BasePicScheduleDetailRepository _picScheduleDetailRepository =
+      PicScheduleDetailRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
+  final BasePicNextQueueRepository _picNextQueueRepository =
+      PicNextQueueRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -95,6 +113,9 @@ void main() {
         polyRepository: _polyRepository,
         createQueueRepository: _createQueueRepository,
         myQueueRepository: _myQueueRepository,
+        picConfirmQueueRepository: _picConfirmQueueRepository,
+        picScheduleDetailRepository: _picScheduleDetailRepository,
+        picNextQueueRepository: _picNextQueueRepository,
       ),
     ),
     (error, stackTrace) => log(

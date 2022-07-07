@@ -6,6 +6,8 @@ export 'doctor_schedule/doctor_schedule_cubit.dart';
 export 'hospital/hospital_cubit.dart';
 export 'my_queue/my_queue_cubit.dart';
 export 'notification/notification_cubit.dart';
+export 'pic_confirm_queue/pic_confirm_queue_cubit.dart';
+export 'pic_next_queue/pic_next_queue_cubit.dart';
 export 'poly/poly_cubit.dart';
 export 'profile/profile_cubit.dart';
 export 'sign_in/sign_in_cubit.dart';
