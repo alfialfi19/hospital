@@ -21,6 +21,7 @@ class App extends StatelessWidget {
   final BasePicConfirmQueueRepository picConfirmQueueRepository;
   final BasePicScheduleDetailRepository picScheduleDetailRepository;
   final BasePicNextQueueRepository picNextQueueRepository;
+  final BasePicCheckResultRepository picCheckResultRepository;
 
   const App({
     Key? key,
@@ -38,6 +39,7 @@ class App extends StatelessWidget {
     required this.picConfirmQueueRepository,
     required this.picScheduleDetailRepository,
     required this.picNextQueueRepository,
+    required this.picCheckResultRepository,
   }) : super(key: key);
 
   @override
@@ -85,6 +87,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => picNextQueueRepository,
+        ),
+        RepositoryProvider(
+          create: (context) => picCheckResultRepository,
         ),
       ],
       child: MultiBlocProvider(

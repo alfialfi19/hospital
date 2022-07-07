@@ -183,8 +183,7 @@ class _QueueListContentState extends State<QueueListContent> {
                                       data: {
                                         'pic_schedule': widget.picSchedule,
                                         'poly': widget.poly,
-                                        'queue_no':
-                                            data?.queues?[index].queueNo,
+                                        'queue': data?.queues?[index],
                                       },
                                     ),
                                   );

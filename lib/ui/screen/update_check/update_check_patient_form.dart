@@ -1,19 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/common/common.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/core.dart';
 import '../../ui.dart';
 
-class UpdateCheckPatientForm extends StatefulWidget {
+class UpdateCheckPatientForm extends StatelessWidget {
   const UpdateCheckPatientForm({Key? key}) : super(key: key);
 
   @override
-  State<UpdateCheckPatientForm> createState() => _UpdateCheckPatientFormState();
+  Widget build(BuildContext context) {
+    PicSchedule? _picSchedule;
+    Poly? _poly;
+    PatientQueues? _queue;
+
+    if (ModalRoute.of(context)!.settings.arguments is Map) {
+      var mapData = ModalRoute.of(context)!.settings.arguments as Map;
+
+      _picSchedule = mapData['pic_schedule'];
+      _poly = mapData['poly'];
+      _queue = mapData['queue'];
+    }
+
+    return BlocProvider(
+      create: (context) => PicCheckResultCubit(
+        localStorageClient: context.read<BaseLocalStorageClient>(),
+        picCheckResultRepository: context.read<BasePicCheckResultRepository>(),
+      ),
+      child: UpdateCheckPatientFormContent(
+        picSchedule: _picSchedule,
+        poly: _poly,
+        queue: _queue,
+      ),
+    );
+  }
 }
 
-class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
+class UpdateCheckPatientFormContent extends StatefulWidget {
+  final PicSchedule? picSchedule;
+  final Poly? poly;
+  final PatientQueues? queue;
+
+  const UpdateCheckPatientFormContent({
+    Key? key,
+    this.picSchedule,
+    this.poly,
+    this.queue,
+  }) : super(key: key);
+
+  @override
+  State<UpdateCheckPatientFormContent> createState() =>
+      _UpdateCheckPatientFormContentState();
+}
+
+class _UpdateCheckPatientFormContentState
+    extends State<UpdateCheckPatientFormContent> {
   TextEditingController edtComplaint = TextEditingController();
   TextEditingController edtDiagnose = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -31,18 +77,6 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
 
   @override
   Widget build(BuildContext context) {
-    PicSchedule? _picSchedule;
-    Poly? _poly;
-    int? _queueNo;
-
-    if (ModalRoute.of(context)!.settings.arguments is Map) {
-      var mapData = ModalRoute.of(context)!.settings.arguments as Map;
-
-      _picSchedule = mapData['pic_schedule'];
-      _poly = mapData['poly'];
-      _queueNo = mapData['queue_no'];
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(Wording.updateCheckResult),
@@ -51,66 +85,130 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
       body: SafeArea(
         child: Stack(
           children: [
-            ListView(
-              padding: const EdgeInsets.all(
-                26.0,
-              ),
-              children: [
-                _buildDateTimeSection(
-                  context,
-                  _picSchedule,
-                  _poly,
-                  _queueNo,
+            BlocListener<PicCheckResultCubit, BaseState>(
+              listener: (context, actionState) {
+                if (actionState is SuccessState) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Palette.hospitalPrimary,
+                      content: Text("Berhasil Update Pemeriksaan"),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+
+                  setState(() {
+                    _isLoading = false;
+                  });
+
+                  Navigator.pop(context);
+                }
+
+                if (actionState is EmptyState || actionState is ErrorState) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Palette.red,
+                      content: Text("Gagal Update Pemeriksaan"),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+
+                if (actionState is LoadingState) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                }
+              },
+              child: ListView(
+                padding: const EdgeInsets.all(
+                  26.0,
                 ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                _buildDoctorAndPolySection(
-                  context,
-                  _picSchedule,
-                  _poly,
-                  _queueNo,
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                _buildIdAndQueueNoSection(
-                  context,
-                  _picSchedule,
-                  _poly,
-                  _queueNo,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const Divider(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                _buildComplaintAndDiagnoseSection(
-                  context,
-                  edtComplaint,
-                  edtDiagnose,
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: SquareButton(
-                  buttonText: Wording.save,
-                  textStyle: FontHelper.h7Regular(
-                    color: Palette.white,
+                children: [
+                  _buildDateTimeSection(
+                    context,
+                    widget.picSchedule,
+                    widget.poly,
+                    widget.queue,
                   ),
-                  onTap: () => Navigator.pop(context),
-                ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  _buildDoctorAndPolySection(
+                    context,
+                    widget.picSchedule,
+                    widget.poly,
+                    widget.queue,
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  _buildIdAndQueueNoSection(
+                    context,
+                    widget.picSchedule,
+                    widget.poly,
+                    widget.queue,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  _buildComplaintAndDiagnoseSection(
+                    context,
+                    edtComplaint,
+                    edtDiagnose,
+                  ),
+                ],
               ),
             ),
+            !_isLoading
+                ? Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                      ),
+                      child: SquareButton(
+                        buttonText: Wording.save,
+                        textStyle: FontHelper.h7Regular(
+                          color: Palette.white,
+                        ),
+                        onTap: () {
+                          if (edtDiagnose.text.isNotEmpty &&
+                              edtComplaint.text.isNotEmpty) {
+                            context.read<PicCheckResultCubit>().getData(
+                                  queueId: widget.queue!.id!,
+                                  diagnoseResult: edtDiagnose.text,
+                                  diseaseDescription: edtComplaint.text,
+                                );
+                          }
+                        },
+                      ),
+                    ),
+                  )
+                : const Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                      ),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Palette.hospitalPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
@@ -121,7 +219,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     BuildContext context,
     PicSchedule? schedule,
     Poly? poly,
-    int? queueNo,
+    PatientQueues? queue,
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,7 +274,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     BuildContext context,
     PicSchedule? schedule,
     Poly? poly,
-    int? queueNo,
+    PatientQueues? queue,
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,7 +327,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
     BuildContext context,
     PicSchedule? schedule,
     Poly? poly,
-    int? queueNo,
+    PatientQueues? queue,
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +365,7 @@ class _UpdateCheckPatientFormState extends State<UpdateCheckPatientForm> {
                 height: 3.0,
               ),
               Text(
-                queueNo.toString(),
+                queue?.queueNo?.toString() ?? "-",
                 style: FontHelper.h8Bold(),
                 overflow: TextOverflow.ellipsis,
               ),

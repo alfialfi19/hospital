@@ -13,4 +13,5 @@ class Url {
   // PIC
   static const String picPolySchedule = '/pic-poli/schedule';
   static const String nextQueue = '/pic-poli/queue/next';
+  static const String updateResult = '/pic-poli/queue/result';
 }

@@ -90,6 +90,12 @@ void main() {
     baseUrl: _baseUrl,
   );
 
+  final BasePicCheckResultRepository _picCheckResultRepository =
+      PicCheckResultRepository(
+    apiClient: _apiClient,
+    baseUrl: _baseUrl,
+  );
+
   // Disable Landscape Mode
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -116,6 +122,7 @@ void main() {
         picConfirmQueueRepository: _picConfirmQueueRepository,
         picScheduleDetailRepository: _picScheduleDetailRepository,
         picNextQueueRepository: _picNextQueueRepository,
+        picCheckResultRepository: _picCheckResultRepository,
       ),
     ),
     (error, stackTrace) => log(

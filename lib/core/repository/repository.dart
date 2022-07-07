@@ -5,6 +5,7 @@ export 'my_queue/base_my_queue_repository.dart';
 export 'notification/base_notification_repository.dart';
 export 'pic_confirm_queue/base_pic_confirm_queue_repository.dart';
 export 'pic_next_queue/base_pic_next_queue_repository.dart';
+export 'pic_queue_result/base_pic_check_result_repository.dart';
 export 'pic_schedule_detail/base_pic_schedule_detail_repository.dart';
 export 'poly/base_poly_repository.dart';
 export 'profile/base_profile_repository.dart';
